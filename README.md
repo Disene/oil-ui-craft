@@ -88,9 +88,9 @@ The open-source version takes a new page from a blank start to a good-looking de
 
 Oil UI Pro costs $9.99: a one-time purchase with lifetime updates. Purchase it at [ui.oiloil.org/pro](https://ui.oiloil.org/en/pro/?utm_source=github&utm_medium=referral&utm_campaign=readme-en).
 
-## Version checks
+## Fork updates
 
-Each time it is used, the Skill checks for a newer version, going online at most once every 10 minutes. It only reads the public version list at ui.oiloil.org and uploads nothing from your project. By default it only tells you about an update; it downloads and replaces nothing unless you explicitly ask it to update. Results are cached in `~/.local/state/oil/` (or `XDG_STATE_HOME` when set; `%LOCALAPPDATA%\oil\` on Windows). It needs Python 3. Set `OIL_NO_UPDATE_CHECK=1` to turn it off.
+This Fork **does not run the upstream in-place updater**, which could overwrite independently authored additions. Update installations only from [Disene/oil-ui-craft](https://github.com/Disene/oil-ui-craft) when requested. Review and merge upstream Oil UI updates into this Fork before updating installations. The preserved `scripts/check_update.py` refuses upstream `--update` when a `fork_release` metadata marker exists.
 
 ## Use with
 
