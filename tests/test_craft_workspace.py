@@ -1,8 +1,5 @@
 """Focused real-browser checks for the independently authored adaptive-workspace example."""
-import json
 from pathlib import Path
-import shutil
-import subprocess
 import sys
 import tempfile
 import unittest
@@ -72,6 +69,12 @@ class WorkspaceFixtureTests(unittest.TestCase):
             {"action": "expectVisible", "target": ".headingrow"},
             {"action": "click", "target": 'button[data-open="pilot-admin"]'},
             {"action": "expectText", "target": "#permissionInfo", "value": "可管理"},
+            {"action": "click", "target": '[data-demo="导入"]'},
+            {"action": "expectVisible", "target": "#infoDialog"},
+            {"action": "expectFocused", "target": "#closeDialog"},
+            {"action": "press", "key": "Escape"},
+            {"action": "expectHidden", "target": "#infoDialog"},
+            {"action": "expectFocused", "target": '[data-demo="导入"]'},
             {"action": "expectNoDocumentOverflow"},
         ])
 
