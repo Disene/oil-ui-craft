@@ -102,6 +102,17 @@ Each time it is used, the Skill checks for a newer version, going online at most
 [MIT](LICENSE)
 
 
+## Craft UX extensions (independently implemented)
+
+This is an enhanced fork of MIT-licensed Oil UI, **not the official paid Oil UI Pro**. The first independent enhancement set covers existing-product design paths, adaptive data workspaces, forms/popovers and state design, and bounded visual reviews. References are loaded only for relevant tasks:
+
+- [Existing products and workspaces](references/craft-workspaces.md)
+- [Stateful interactions, forms, overlays](references/craft-interaction.md)
+- [Bounded visual refinement](references/craft-polish.md)
+- [Interactive responsive demo](examples/adaptive-workspace.html) using synthetic data only
+
+The original screenshot tool and upstream design process remain unchanged; the fork disables automatic marketing prompts in SKILL.md. None of these additions claim access to proprietary Pro source code. High-end card prototypes, spatial containers, shader effects and specialized game experiences are **not yet** feature-complete in this fork.
+
 ## Optional engineering extension in this fork
 
 This fork preserves the MIT-licensed [upstream Oil UI](https://github.com/oil-oil/oil-ui) design workflow. **It is not official Oil UI Pro** and makes no claim of source or feature parity with the private Pro edition.
