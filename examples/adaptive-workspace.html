@@ -22,8 +22,8 @@ input[type=search],select{height:44px;border:1px solid #bfcce0;border-radius:7px
 .surface{background:white;border:1px solid var(--line);border-radius:8px;min-width:0}
 .counterbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;color:var(--sub)}.selectedbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 12px;background:#eff4ff;color:#1746ac;border-radius:6px;margin-bottom:8px}
 .selectedbar[hidden],#bulk[hidden],#detail[hidden]{display:none!important}
-.headingrow{display:grid;grid-template-columns:44px minmax(125px,1fr) 110px 90px 110px;align-items:center;gap:10px;background:#f0f3fa;border-bottom:1px solid var(--line);font-size:12px;font-weight:600;color:var(--sub);padding:10px}
-.accountrow{display:grid;grid-template-columns:44px minmax(125px,1fr) 110px 90px 110px;align-items:center;gap:10px;border-bottom:1px solid var(--line);min-height:62px;padding:8px 10px}
+.headingrow{display:grid;grid-template-columns:44px minmax(125px,1fr) 105px 82px 168px;align-items:center;gap:10px;background:#f0f3fa;border-bottom:1px solid var(--line);font-size:12px;font-weight:600;color:var(--sub);padding:10px}
+.accountrow{display:grid;grid-template-columns:44px minmax(125px,1fr) 105px 82px 168px;align-items:center;gap:10px;border-bottom:1px solid var(--line);min-height:62px;padding:8px 10px}
 .accountrow:last-child{border-bottom:none}.accountrow.is-current{background:#f1f4fa}.accountrow.is-checked .selection{background:#e6efff}
 .selection{display:grid;place-items:center;align-self:stretch;margin:-8px -10px;padding:8px 10px}
 .selection input{height:18px;width:18px;accent-color:var(--blue)}.namebtn{border:0;background:transparent;text-align:left;padding:0;font-weight:700;overflow-wrap:anywhere;min-width:0}
@@ -61,7 +61,7 @@ input[type=search],select{height:44px;border:1px solid #bfcce0;border-radius:7px
  <div class="content"><section id="listing" aria-label="账号列表">
  <div class="counterbar"><span id="count" role="status">已加载 0 个账号</span><button id="reset" type="button">重置筛选</button></div>
  <div class="selectedbar" id="selectedBar" hidden><strong id="selectedCount">已选 0 个</strong><button type="button" id="jump">进入批量操作</button></div>
- <div class="surface"><div class="headingrow"><span>选择</span><span>账号</span><span>角色</span><span>状态</span><span>内容发布</span></div><div id="rows"></div></div>
+ <div class="surface"><div class="headingrow"><span>选择</span><span>账号</span><span>角色</span><span>状态</span><span>账号权限</span></div><div id="rows"></div></div>
  </section>
  <aside id="detail" class="surface detail" aria-label="账号详情">
  <button id="backList" type="button">返回账号列表</button>
@@ -115,7 +115,7 @@ input[type=search],select{height:44px;border:1px solid #bfcce0;border-radius:7px
    const row=document.createElement('div');row.className='accountrow';row.dataset.name=a.name;row.classList.toggle('is-current',current===a.name);
    const wrap=cell('label','','selection'),check=document.createElement('input');check.type='checkbox';check.checked=selection.has(a.name);check.setAttribute('aria-label','勾选 '+a.name);check.dataset.select=a.name;wrap.append(check);
    const open=cell('button',a.name,'namebtn');open.type='button';open.dataset.open=a.name;open.setAttribute('aria-label','查看 '+a.name);
-   row.append(wrap,open,cell('span',a.role,'role muted'),cell('span',a.on?'● 启用':'● 停用','status statuscol'+(a.on?'':' off')),cell('span',a.publish?'可发布':'不可发布','perm'));
+   row.append(wrap,open,cell('span',a.role,'role muted'),cell('span',a.on?'● 启用':'● 停用','status statuscol'+(a.on?'':' off')),cell('span','内容发布 '+(a.publish?'可发布':'不可发布')+' · 账号管理 '+(a.role==='管理员'?'可管理':'不可管理'),'perm'));
    rows.append(row);
   }
   refreshSelection();
