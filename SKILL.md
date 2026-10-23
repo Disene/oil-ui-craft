@@ -83,7 +83,7 @@ metadata:
 
 新产品要把主要内容的层级和关键的操作流程做出来，不只做一个漂亮的默认状态。新界面和改动了操作流程时，按 [动效](references/motion.md) 做出三处基本动效；落地页、品牌页、发布页和展览页还必须读 [滚动叙事](references/scroll-narrative.md)，用成熟的动效库做区块按内容出场和至少一段滑动驱动的叙事，手法按页面挑。改流程和加新功能时把动效写进设计说明；小改动不加。
 
-**Fork 的可选增强**：涉及已有管理后台、列表详情工作区或响应式任务布局时，按需读 [工作区与存量项目](references/craft-workspaces.md)；涉及表单、下拉、弹层、批量选择和异步状态时，按需读 [交互与状态](references/craft-interaction.md)；用户要求整页/单组件深度精修或独立有界复核时，按需读 [精修与评审](references/craft-polish.md)。这三项是 Disene Fork 独立撰写的公开能力增强，**不是官方付费版源码，也不宣称与 Oil UI Pro 功能等价**。需要具体交互实现参考时可打开 [响应式工作区示例](examples/adaptive-workspace.html)；项目自有设计系统及业务合同始终优先。静态方向卡或小幅样式修改不加载这些扩展。
+**Fork 的可选增强**：涉及已有管理后台、列表详情工作区或响应式任务布局时，按需读 [工作区与存量项目](references/craft-workspaces.md)；涉及表单、下拉、弹层、批量选择和异步状态时，按需读 [交互与状态](references/craft-interaction.md)；用户要求整页/单组件深度精修或独立有界复核时，按需读 [精修与评审](references/craft-polish.md)。这三项是 Disene Fork 独立撰写的公开能力增强，**不是官方付费版源码，也不宣称与 Oil UI Pro 功能等价**。需要具体交互实现参考时可打开 [响应式工作区示例](examples/adaptive-workspace.html)；需要卡片布局、空间折展或单组件交互原型时，按需读 [原创卡片和空间展开](references/craft-components.md)；项目自有设计系统及业务合同始终优先。静态方向卡或小幅样式修改不加载这些扩展。
 
 构图阶段先按 [素材](references/media.md) 判断图像能否承担主信息或情绪重心。需要关键素材时先选定或制作它，再围绕它安排文字和操作，不等布局填满后再补图。
 
