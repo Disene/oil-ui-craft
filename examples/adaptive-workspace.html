@@ -34,6 +34,7 @@ input[type=search],select{height:44px;border:1px solid #bfcce0;border-radius:7px
 .detail .section{margin-top:21px}.bottom-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:19px}
 #backList{display:none;margin-bottom:14px}
 #bulk{margin-top:20px;padding:20px}.notice{padding:10px 12px;border-radius:6px;background:#f3f6fc;color:var(--sub)}.empty{padding:26px;color:var(--sub)}
+dialog{border:1px solid var(--line);border-radius:10px;padding:22px;max-width:min(440px,calc(100vw - 32px));color:var(--ink);box-shadow:0 16px 44px #15233b35}dialog::backdrop{background:#101d3480}dialog h2{font-size:19px;margin:0 0 10px}dialog p{color:var(--sub)}
 @media(max-width:900px){
  header.site nav{display:none}main{margin:20px auto}
  .content{grid-template-columns:1fr}
@@ -54,7 +55,7 @@ input[type=search],select{height:44px;border:1px solid #bfcce0;border-radius:7px
 <body>
 <header class="site"><div class="brand">Craft · UI 参考</div><span class="small">合成数据交互演示</span><nav aria-label="全局导航"><span>工作区</span><span>设置</span></nav></header>
 <main id="app">
- <div class="toolbar"><h1>账号工作台</h1><div class="actions"><button class="quiet" type="button">操作记录</button><button type="button">导入</button><button type="button" class="primary">创建</button></div></div>
+ <div class="toolbar"><h1>账号工作台</h1><div class="actions"><button class="quiet" type="button" data-demo="操作记录">操作记录</button><button type="button" data-demo="导入">导入</button><button type="button" class="primary" data-demo="创建">创建</button></div></div>
  <form class="controls" id="filter"><label for="query">搜索账号<input id="query" type="search" autocomplete="off" placeholder="输入账号名称"></label>
  <label for="state">账号状态<select id="state"><option value="all">全部状态</option><option value="on">启用</option><option value="off">停用</option></select></label>
  <button type="submit">搜索</button></form>
@@ -77,6 +78,7 @@ input[type=search],select{height:44px;border:1px solid #bfcce0;border-radius:7px
  <p id="bulkTargets"></p><div class="bottom-actions"><button id="cancelBatch" type="button">返回账号列表</button><button id="clear" type="button">清除已选</button></div>
  </section>
 </main>
+<dialog id="infoDialog" aria-labelledby="dialogTitle" aria-describedby="dialogDesc"><h2 id="dialogTitle"></h2><p id="dialogDesc">这里演示弹窗交互，不提交数据，也不连接任何外部服务。</p><button id="closeDialog" type="button">关闭</button></dialog>
 <script>
 (()=>{'use strict';
  const fixture=[
@@ -154,7 +156,13 @@ input[type=search],select{height:44px;border:1px solid #bfcce0;border-radius:7px
  });
  byId('cancelBatch').addEventListener('click',()=>{bulk.hidden=true;byId('jump').focus({preventScroll:true});byId('selectedBar').scrollIntoView({block:'nearest'});});
  byId('clear').addEventListener('click',()=>{selection.clear();refreshSelection();rows.querySelector('input[data-select]')?.focus({preventScroll:true});});
- byId('edit').addEventListener('click',()=>{alert('这是结构与交互示例：无真实写入。');});
+ let dialogOpener=null;
+ const dialog=byId('infoDialog');
+ function openDemo(title,opener){dialogOpener=opener;byId('dialogTitle').textContent=title;dialog.showModal();byId('closeDialog').focus();}
+ document.querySelectorAll('[data-demo]').forEach(button=>button.addEventListener('click',()=>openDemo(button.dataset.demo,button)));
+ byId('edit').addEventListener('click',e=>openDemo('修改账号（交互示例）',e.currentTarget));
+ byId('closeDialog').addEventListener('click',()=>dialog.close());
+ dialog.addEventListener('close',()=>{if(dialogOpener?.isConnected)dialogOpener.focus();});
  renderRows();renderDetail();
 })();
 </script>
