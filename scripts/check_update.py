@@ -255,11 +255,24 @@ def utf8_output() -> None:
             stream.reconfigure(encoding="utf-8")
 
 
+def fork_installation() -> bool:
+    """Protect maintained forks from upstream CLI in-place replacement."""
+    try:
+        header = (ROOT / "SKILL.md").read_text(encoding="utf-8")[:4096]
+    except OSError:
+        return False
+    return bool(re.search(r'(?m)^\\s*fork_release:\\s*[^\\s#]+', header))
+
+
 def main() -> int:
     utf8_output()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--update", action="store_true", help="Explicitly authorize updating this installation")
     approved = parser.parse_args().update
+    if fork_installation():
+        if approved:
+            print("OIL_FORK_UPDATE_DISABLED: use https://github.com/Disene/oil-ui-craft for reviewed updates")
+        return 0
     if os.environ.get("OIL_NO_UPDATE_CHECK") or (ROOT / ".git").exists():
         return 0
     skill = read_skill()
