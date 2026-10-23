@@ -110,8 +110,9 @@ This is an enhanced fork of MIT-licensed Oil UI, **not the official paid Oil UI 
 - [Stateful interactions, forms, overlays](references/craft-interaction.md)
 - [Bounded visual refinement](references/craft-polish.md)
 - [Interactive responsive demo](examples/adaptive-workspace.html) using synthetic data only
+- [Six original card archetypes and a spatial-expand interaction](references/craft-components.md); [interactive gallery](examples/craft-cards/index.html), with plain HTML/CSS/JS and focus/reduced-motion browser tests
 
-The original screenshot tool and upstream design process remain unchanged; the fork disables automatic marketing prompts in SKILL.md. None of these additions claim access to proprietary Pro source code. High-end card prototypes, spatial containers, shader effects and specialized game experiences are **not yet** feature-complete in this fork.
+The original screenshot tool and upstream design process remain unchanged; the fork disables automatic marketing prompts in SKILL.md. None of these additions claim access to proprietary Pro source code. Only six original card compositions and one native-Dialog spatial expansion are currently implemented—not the official 19 Pro prototypes. Advanced shader effects and full game experiences are **not yet** implemented or validated in real products.
 
 ## Optional engineering extension in this fork
 
