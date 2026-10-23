@@ -88,9 +88,9 @@ npx skills add Disene/oil-ui-craft
 
 Oil UI Pro 69 元，一次买断，永久更新，在 [ui.oiloil.org/pro](https://ui.oiloil.org/pro/?utm_source=github&utm_medium=referral&utm_campaign=readme-zh) 购买。
 
-## 版本检查
+## Fork 版本管理
 
-每次使用时，Skill 会检查一次有没有新版本，最多每 10 分钟联网一次。它只读取 ui.oiloil.org 公开的版本列表，不上传项目内容；默认只提示，不下载、不替换任何文件，只有你明确要求更新时才更新。检查结果缓存在 `~/.local/state/oil/`（设置了 `XDG_STATE_HOME` 时用它，Windows 在 `%LOCALAPPDATA%\oil\`）。需要 Python 3；不想检查时设置环境变量 `OIL_NO_UPDATE_CHECK=1`。
+本 Fork **不调用上游自动版本检查或官方 Oil CLI 原地升级**，避免官方安装包覆盖独立新增的文件。只有用户明确要求时，才从 [Disene/oil-ui-craft](https://github.com/Disene/oil-ui-craft) 更新安装副本。若要吸收上游 [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui) 的新版本，应先在此 Fork 复核差异、运行必要测试、合并，再更新本地 Skill。保留的 `scripts/check_update.py` 会识别 Fork 标记并拒绝执行上游 `--update`。
 
 ## 搭配使用
 
