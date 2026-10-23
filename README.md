@@ -28,13 +28,13 @@ For more usable interfaces, existing project redesigns, or effects such as light
 Send this to an agent that can install skills:
 
 ```text
-Install this skill for me: run npx skills add oil-oil/oil-ui
+Install this skill for me: run npx skills add Disene/oil-ui-craft
 ```
 
 Or run this in your terminal:
 
 ```bash
-npx skills add oil-oil/oil-ui
+npx skills add Disene/oil-ui-craft
 ```
 
 It's ready to use right after installation, with nothing to configure. When a new version is out, your agent mentions it at the end of a reply; ask it to update whenever you like. If you already have Oil UI Pro, you don't need the open-source version. Installing both makes them compete for the same requests.
@@ -100,3 +100,10 @@ Each time it is used, the Skill checks for a newer version, going online at most
 ## License
 
 [MIT](LICENSE)
+
+
+## Optional engineering extension in this fork
+
+This fork preserves the MIT-licensed [upstream Oil UI](https://github.com/oil-oil/oil-ui) design workflow. **It is not official Oil UI Pro** and makes no claim of source or feature parity with the private Pro edition.
+
+For changed real user flows only, see [engineering acceptance](references/engineering-acceptance.md) (Chinese). `scripts/ux_journey.py` checks browser interactions; `scripts/ux_gate.py` summarizes its result alongside upstream `shoot.mjs` reports, without mistaking tool success for visual/UX acceptance. Playwright is optional and the upstream Skill works without it. Project-specific rules remain in each project, not in the shared Skill.
