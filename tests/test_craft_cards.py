@@ -82,18 +82,26 @@ class Cards(unittest.TestCase):
         p.close()
 
     def test_mobile_and_desktop_layout_and_screenshots(self):
-        for width,height in [(1440,900),(390,844),(768,900)]:
+        for width,height in [(1440,900),(390,844),(768,900),(320,700)]:
             p=self.page(width,height)
             overflow=p.evaluate("Math.max(document.documentElement.scrollWidth,document.body.scrollWidth)-window.innerWidth")
             self.assertLessEqual(overflow,3,(width,overflow))
             boxes=p.locator('article.design-card').evaluate_all('els=>els.map(e=>({x:e.getBoundingClientRect().x,y:e.getBoundingClientRect().y,width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height}))')
-            self.assertGreater(min(b['width'] for b in boxes),310)
+            self.assertGreater(min(b['width'] for b in boxes), min(310,width-35))
             self.assertGreater(min(b['height'] for b in boxes),320)
             p.screenshot(path=str(ART/f'cards-{width}.png'),full_page=True,animations='disabled')
             p.locator('button[data-card="atelier"]').click()
             expect(p.locator('#cardDialog')).to_be_visible()
             assert p.evaluate("document.activeElement.closest('dialog')!==null")
             p.screenshot(path=str(ART/f'expanded-{width}.png'),animations='disabled')
+            p.close()
+
+    def test_css_200_percent_zoom(self):
+        for width in (390, 1440):
+            p=self.page(width,844)
+            p.evaluate('document.body.style.zoom="200%"')
+            overflow=p.evaluate("Math.max(document.documentElement.scrollWidth,document.body.scrollWidth)-window.innerWidth")
+            self.assertLessEqual(overflow,3,(width,overflow))
             p.close()
 
     def test_reduced_motion_and_modal_has_no_api_writes(self):
