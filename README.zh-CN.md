@@ -28,13 +28,13 @@ Oil UI 是给 AI Agent 用的界面设计 Skill：先拉开几种真正不同的
 把这句话交给支持安装 Skill 的 Agent：
 
 ```text
-请帮我安装这个 Skill：运行 npx skills add oil-oil/oil-ui
+请帮我安装这个 Skill：运行 npx skills add Disene/oil-ui-craft
 ```
 
 或者在终端运行：
 
 ```bash
-npx skills add oil-oil/oil-ui
+npx skills add Disene/oil-ui-craft
 ```
 
 装好就能用，不需要额外配置。有新版本时，Agent 会在回复末尾提醒你，想更新直接让它更新就行。已经装了 Oil UI Pro 的话，就不用再装开源版，两个同时装会抢着接同一类请求。
@@ -100,3 +100,12 @@ Oil UI Pro 69 元，一次买断，永久更新，在 [ui.oiloil.org/pro](https:
 ## 许可
 
 [MIT](LICENSE)
+
+
+## 此 Fork 的可选工程增强
+
+此 Fork 继承 [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui) 的 MIT 开源设计能力，**不是官方 Oil UI Pro**，也不宣称复刻了 Pro 的非公开实现。原有设计/视觉评审/截图工具保持可用。
+
+仅在真实界面改流程、异步更新、焦点或响应式回归时，按需使用 [工程交互核验](references/engineering-acceptance.md)：`scripts/ux_journey.py` 断言用户操作路径；`scripts/ux_gate.py` 汇总原版 `shoot.mjs` 的截图报告与旅程结果，避免把工具执行成功误写为 UX 验收通过。Playwright 为可选依赖，不影响基础 Skill 安装。
+
+业务项目的数据口径、品牌设计规范和历史 BUG 继续由各自仓库维护；这里不内置 StepWise、AutoKPI 或其他特定项目规则。
