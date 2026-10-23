@@ -50,6 +50,29 @@ dialog{border:1px solid var(--line);border-radius:10px;padding:22px;max-width:mi
  .selectedbar button{white-space:nowrap;padding:7px 10px}.detail{padding:20px 16px}
 }
 @media(prefers-reduced-motion:no-preference){button{transition:background-color .15s,border-color .15s}}
+/* Container breakpoints also respond when CSS zoom reduces available content width. */
+header.site{flex-wrap:wrap}.brand{white-space:normal}
+main{container-type:inline-size}.toolbar,.actions,.counterbar,.selectedbar{flex-wrap:wrap}
+@container(max-width:900px){
+ .content{grid-template-columns:1fr}.headingrow{display:none}
+ .accountrow{grid-template-columns:38px minmax(0,1fr) auto;gap:7px;min-height:84px}
+ .accountrow .role{grid-column:2;grid-row:2}.accountrow .statuscol{grid-column:3;grid-row:2}
+ .accountrow .perm{grid-column:2/-1;grid-row:3}.selection{grid-row:1/4;grid-column:1;margin:-8px -10px}
+ .accountrow .namebtn{grid-column:2/-1;grid-row:1}
+ #detail{display:none}.detail-open #listing{display:none}.detail-open #detail{display:block}
+ .detail-open .controls,.detail-open .actions{display:none}#backList{display:inline-flex}
+}
+@container(max-width:550px){
+ .controls{grid-template-columns:minmax(0,1fr) auto}.controls label:first-child{grid-column:1/-1}
+ .controls label:nth-child(2){grid-column:1}.toolbar .actions button{padding:6px 9px}
+}
+@container(max-width:300px){
+ .controls{grid-template-columns:minmax(0,1fr)}.controls>*{grid-column:1!important}
+ .accountrow{grid-template-columns:28px minmax(0,1fr)}
+ .accountrow .statuscol{grid-column:2;grid-row:3;justify-self:start}.accountrow .perm{grid-row:4}
+ .selection{grid-row:1/5}.definition{grid-template-columns:minmax(0,1fr);gap:4px}
+ .detail{padding:14px 10px}.selectedbar button{white-space:normal}
+}
 </style>
 </head>
 <body>

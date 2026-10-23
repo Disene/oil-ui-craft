@@ -1,125 +1,58 @@
 [English](README.md) · 中文
 
-<p align="center">
-  <img src="./assets/readme/hero.webp" width="100%" alt="oil-ui：把 AI 的 UI 设计能力推到极限。插画里的人把黄色图钉按在三张风格不同的小样中间那张上">
-</p>
+# Oil UI Craft
 
-<p align="center">
-  <a href="https://ui.oiloil.org/?utm_source=github&utm_medium=referral&utm_campaign=readme-zh"><img src="./assets/readme/showcase.webp" width="100%" alt="先看效果：画廊里的部分作品，包括学英语 App、音乐年度报告、硬件官网、组件库官网、项目管理工具、打车 App、语音助手、结账流程和胶片相机"></a>
-</p>
+基于 [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui) 的 MIT 开源 Fork。保留上游设计探索、风格比较、截图/录屏和评审流程；按任务补充可运行的交互原型与工程核验。**不是官方 Oil UI Pro，不包含其私有源码，也不宣称审美质量或功能逐项等价。**
 
-Oil UI 是给 AI Agent 用的界面设计 Skill：先拉开几种真正不同的设计方向放在一起让你挑，再照着真实画面打磨。网站、App、后台和组件都能做。想看更多效果，可以去 [ui.oiloil.org](https://ui.oiloil.org/?utm_source=github&utm_medium=referral&utm_campaign=readme-zh)。
+继承的上游版本：`0.24.2`。本批独立增强：`craft-ux.2`。若正在查看尚未合并的 PR 分支，常规安装仍读取 main，不会自动安装本分支。
 
-## 它怎么设计
+## 现在可以使用什么
 
-1. **先看清这是什么产品。** 动手之前，先说清楚它属于哪一类，再找出同类里风格最鲜明的两三家，看它们是怎么做的、为什么这么做，然后决定哪些沿用、哪些换掉。
-2. **把“高级”“简洁”翻成具体的决定。** 这类词人人都会说，却落不到画面上。它会先从题材、受众和品牌语气定下调性，比如热闹还是安静、精致还是粗粝、信息排得密还是疏，再把调性翻成看得见的选择：用什么字体、留多少白、颜色占多大面积。
-3. **每个方向都从一样具体的东西出发。** 可以是一种材质和它所在的环境、一个场景、一个角色，也可以借用另一个领域的整套表现方式。灵感从产品本身找，不从“简约”“大气”这类形容词出发。
-4. **先想清楚首屏是给谁看的。** 来看内容、挑东西或者干活的页面，首屏就应该是内容本身；要说服别人的页面，才需要先定首屏的版式，再写文案。
-5. **几个方向要真的不一样。** 版式、字体、配色和主视觉这四样里，任意两个方向最多只能有一样相同。小样做出来后并排放着，眯起眼睛看首屏的明暗分布，太像了就重新定版式，不靠换个颜色补救。
-6. **留一处让人记住的地方。** 不求整页都用力，只把一两处做到极致，比如点按时的反馈、付款成功的那一下、AI 干活的过程，或者一个 404 页面，其余地方保持安静。
-7. **好不好看由你来定。** 几份小样放进同一个对比页，由你挑一个，再说说具体喜欢和不喜欢哪里。它按你的意见收紧之后，再往下做。
-8. **以真实画面为准。** 做完会在电脑和手机尺寸下打开页面截图检查，也可以请一位没看过制作过程的评审来挑问题。最后做一轮减法：一页只留一个主角，删掉不影响理解的文字、重复的线和多余的框。
+| 范围 | 可用结果 | 边界 |
+| --- | --- | --- |
+| 基础设计能力 | 上游方向探索、视觉语言、素材、滚动叙事、截图还原 | 保留原版，不重复写一套引擎 |
+| 既有产品/后台 | 三类修改意图、整理/升级/重塑强度、十类独立工作区选型 | 这是设计方法，不是十套生产后台 |
+| 表单与状态 | 键盘/IME、弹层、失败恢复、列表详情与批量入口 | 按实际任务读取，不全量套用 |
+| 原创组件 | **19 套**：前六种空间卡片 + 十三种交互模式 | 不与官方十九套一一对应 |
+| 特效 | SVG 流光、Canvas 点阵、WebGL 渐变源码及 CSS 降级 | 当前环境只实测 SVG/Canvas/降级，WebGL 实跑未验 |
+| 小游戏 | 一个可运行的配对游戏，含准备/进行/暂停/胜败/重开 | 不声称覆盖所有类型游戏 |
+| 独立精修 | 最多三轮的可选方法、去作者线索的截图材料工具 | 工具不调用模型，不能证明实际独立评审 |
+| 工程验证 | 可选旅程、谨慎汇总、Fork 更新防覆盖 | 不等于真人/业务/生产验收 |
 
-想让界面更好用、改造老项目，或者做流光、点阵这类特效，可以看看 [Oil UI Pro](https://ui.oiloil.org/pro/?utm_source=github&utm_medium=referral&utm_campaign=readme-zh)，区别见[下文](#开源版和-pro)。
+[打开所有示例](examples/index.html) · [组件说明](references/craft-components.md) · [特效与游戏](references/craft-effects-games.md) · [验证记录](docs/VALIDATION.md)
 
-## 安装
+示例 HTML/CSS/JS 分离，内容全部合成，无在线字体、付费服务或真实账号写入。复制到业务项目时复用其既有设计系统和数据合同，不整包植入第二套系统。
 
-把这句话交给支持安装 Skill 的 Agent：
+## 安装和更新
 
-```text
-请帮我安装这个 Skill：运行 npx skills add Disene/oil-ui-craft
-```
-
-或者在终端运行：
-
-```bash
+```sh
 npx skills add Disene/oil-ui-craft
 ```
 
-装好就能用，不需要额外配置。有新版本时，Agent 会在回复末尾提醒你，想更新直接让它更新就行。已经装了 Oil UI Pro 的话，就不用再装开源版，两个同时装会抢着接同一类请求。
+Skill 名称仍为 `oil-ui`；不要同时启用两个同名安装。仓库里的候选代码、合并到 main、用户机器上的安装版本是不同状态。
 
-如果使用 DeepSeek Harness，可以安装原生插件 [dsh-oil-ui](https://github.com/oil-oil/dsh-oil-ui)（`dsh plugin --profile web add github:oil-oil/dsh-oil-ui`，内置免费版，并会自动识别本机已装的 Oil UI Pro）。
+Fork 不运行官方 Oil CLI 原地升级。`check_update.py` 检测到 `fork_release` 时拒绝上游 `--update`，避免增强文件被覆盖。吸收上游新版本应先在此 Fork 比较、测试和合并，再更新安装副本。
 
 ## 使用
 
-直接把任务告诉 Agent，例如：
+主 `SKILL.md` 依任务加载工作区、交互、精修或组件参考；没有改变默认小改动的范围。项目数据口径、权限策略、品牌规范与历史 BUG 留在项目已有文档、代码和 Issue，不加入全局 Skill。
 
-- “用 oil-ui 给这个课程预约产品探索几种设计方向，做成可以预览的页面。”
-- “做三种字体、配色和构图都不同的设计，放在对比页里让我选。”
-- “帮我润色这个页面，按项目现有的设计规范来。”
-- “只评审这个首页，告诉我哪里要改、怎么改，不要动文件。”
-- “按这张截图还原页面，参考图里没有的手机布局也补上。”
+对模型明确说用户目标和交付类型即可，例如：“沿用现有品牌，把这个列表详情任务做得更顺；复用已有组件，检查原入口与返回路径。”不需要每次要求跑所有原型、所有视口或独立多轮审阅。
 
-有品牌资料、截图或现成的项目，可以一起交给它。没有参考也能开始，只有在不清楚要交付什么的时候，它才会来问你。
+## 本地验证
 
-## 自带的风格对比页
+Python 3.10+；浏览器测试可选依赖 Playwright 与获准的 Chromium。缺依赖/不允许运行时记录未执行，不修改组织策略。
 
-<p align="center">
-  <img src="./assets/readme/proof-mona-lisa.webp" width="100%" alt="风格对比页：同一个《蒙娜丽莎》特展页面的三种设计方向，分别是三十厘米、号外 1911 和晕涂">
-</p>
+```sh
+python -m unittest discover -s tests -p 'test_craft*.py' -v
+python -m unittest discover -s tests -p 'test_fork_update.py' -v
+python -m unittest discover -s tests -p 'test_review_packet.py' -v
+```
 
-想比较几份设计时，它会把它们并排放进同一个页面。放进去的可以是 HTML 文件、图片，也可以是正在运行的开发页面，现在的版本可以放在第一个当对照。你可以切换电脑和手机尺寸、点开看实际大小、用方向键翻看。看中哪一份就点“选择”，把复制出来的一句话发给 Agent，它会接着往下做。
+本批聚焦套件 **23/23 通过，0 跳过**；使用完整静态页面的内存装载，不冒充 HTTP 取证、WebGL 实跑、独立 Agent 或真人业务验收。具体失败修复与剩余限制见验证记录。无新增 Actions 或云端费用。
 
-## 开源版和 Pro
+## 来源与许可
 
-<p align="center">
-  <img src="./assets/readme/proof-van-gogh.webp" width="100%" alt="完整版的风格对比页：梵高特展页面的三种设计方向，致提奥、笔触和东窗">
-</p>
+上游方法与代码来自 [Oil UI](https://github.com/oil-oil/oil-ui)。公开对标依据：[开源 / Pro 差异](https://github.com/oil-oil/oil-ui/blob/main/README.zh-CN.md#开源版和-pro)、[官方介绍](https://ui.oiloil.org/intro/)。Fork 的工作区分类、组件、特效、游戏和辅助工具为独立实现。
 
-开源版能把一个新页面从头做到好看。Pro 在这之上，帮你把界面做得好用、把老项目改好，并用更严格的评审和精修把质量往上推。
-
-| | Oil UI 开源版 | Oil UI Pro |
-| --- | :---: | :---: |
-| 设计方向：认品类、定调性、拉开方向、风格对比页 | ✓ | ✓ |
-| 视觉：层级、字体、配色、留白、配图和动效 | ✓ | ✓ |
-| 让人记住的一刻和滚动叙事（视差、一镜到底） | ✓ | ✓ |
-| 截图还原 | ✓ | ✓ |
-| 小游戏的演出节奏、手感、生成素材和实时 3D | ✓ | ✓ |
-| 独立评审 | 视觉打分与轻量 UX 走查 | 以 9 分为目标反复评审修改；检查几个方向有没有撞车；自主风险探针与同路径 UX 复核 |
-| 精修：AI 默认审美自查、细节清单、怎么做减法 | | ✓ |
-| 好用：交互和状态、表单、弹窗与浮层、电脑和手机上的布局 | | ✓ |
-| 后台和工具：按产品挑工作区布局，让风格贯穿整页 | | ✓ |
-| 老项目：优化 UI、改流程、加新功能各有一套做法 | 帮你分清是哪一种 | ✓ |
-| 把单个组件打磨到极致 | | ✓ |
-| 19 套卡片原型和代码、空间折展容器 | | ✓ |
-| 流光、点阵、流动渐变这类特效 | | ✓ |
-| 小游戏的场景布局、视觉和状态检查 | | ✓ |
-
-Oil UI Pro 69 元，一次买断，永久更新，在 [ui.oiloil.org/pro](https://ui.oiloil.org/pro/?utm_source=github&utm_medium=referral&utm_campaign=readme-zh) 购买。
-
-## Fork 版本管理
-
-本 Fork **不调用上游自动版本检查或官方 Oil CLI 原地升级**，避免官方安装包覆盖独立新增的文件。只有用户明确要求时，才从 [Disene/oil-ui-craft](https://github.com/Disene/oil-ui-craft) 更新安装副本。若要吸收上游 [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui) 的新版本，应先在此 Fork 复核差异、运行必要测试、合并，再更新本地 Skill。保留的 `scripts/check_update.py` 会识别 Fork 标记并拒绝执行上游 `--update`。
-
-## 搭配使用
-
-- [oil-motion](https://github.com/oil-oil/oil-motion)：用生成的视频或序列帧做随滚动、拖动变化的网页动画，比如产品拆解、镜头穿越。想要很强的首屏动画时用它。
-- [oil-tone](https://github.com/oil-oil/oil-tone)：把页面上的标题、说明和介绍改得自然、清楚、好读，中文和英文都能用。觉得文案像 AI 写的、读着不顺时用它。
-
-## 许可
-
-[MIT](LICENSE)
-
-
-## Craft 第一批体验增强（独立实现）
-
-这是在开源 Oil UI 之上的独立增强，并不是官方 Oil UI Pro，也不包含其付费私有源码。当前第一批覆盖**存量产品的三种修改路径、复杂后台工作区、响应式列表/详情、表单与弹层状态、受约束的独立视觉精修**：
-
-- [已有项目与工作区](references/craft-workspaces.md)：如何选择局部美化、流程改造或新增功能；桌面表格与手机列表/详情、选择后入口、状态层级。
-- [复杂交互与状态](references/craft-interaction.md)：表单、组合框/中文 IME、弹窗焦点、异步与失败恢复、批量选择。
-- [有界精修与复核](references/craft-polish.md)：检查 AI 默认审美，按截图精修、避免为评分无限循环。
-- [可操作的独立 HTML 示例](examples/adaptive-workspace.html)：桌面/窄屏切换、两项权限、查看与勾选分离、选择后进入批量区、详情返回原焦点。全为合成数据，**不会写入真实账号**。
-- [六套原创卡片和空间展开](references/craft-components.md)：监控、结算、步骤、编辑叙事、任务堆叠、权限六种不同构图；[打开可运行画廊](examples/craft-cards/index.html)，提供原生 Dialog、空间位置过渡、Escape 与焦点恢复、reduced-motion、独立 HTML/CSS/JS 和聚焦浏览器测试。
-
-四份规则都由主 Skill **按需读取**，不增加默认全量审阅或安装依赖。原有 `shoot.mjs` 继续负责截图；需要操作回归时优先使用项目已有浏览器脚本，必要时再用本 Fork 的可选 `ux_journey.py`。此 Fork 已关闭上游默认的付费版自动推广提示，但保留原作者和 MIT 许可。
-
-**仍未覆盖的高级能力**：官方付费版 19 套原型的等价实现仍不存在；当前仅有 6 套独立原创卡片与 1 个原生 Dialog 空间展开机制，不是 19 套。复杂 Shader/流光点阵、小游戏完整场景、真实项目的大范围盲审收敛尚未完成。不会把旧版平行组件库算入本 Fork 的覆盖数。
-
-## 此 Fork 的可选工程增强
-
-此 Fork 继承 [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui) 的 MIT 开源设计能力，**不是官方 Oil UI Pro**，也不宣称复刻了 Pro 的非公开实现。原有设计/视觉评审/截图工具保持可用。
-
-仅在真实界面改流程、异步更新、焦点或响应式回归时，按需使用 [工程交互核验](references/engineering-acceptance.md)：`scripts/ux_journey.py` 断言用户操作路径；`scripts/ux_gate.py` 汇总原版 `shoot.mjs` 的截图报告与旅程结果，避免把工具执行成功误写为 UX 验收通过。Playwright 为可选依赖，不影响基础 Skill 安装。
-
-业务项目的数据口径、品牌设计规范和历史 BUG 继续由各自仓库维护；这里不内置 StepWise、AutoKPI 或其他特定项目规则。
+[MIT](LICENSE)，保留原作者版权声明。不要将这些示例宣传为官方 Oil UI Pro。

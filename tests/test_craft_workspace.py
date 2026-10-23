@@ -39,6 +39,25 @@ class WorkspaceFixtureTests(unittest.TestCase):
             self.assertEqual(report["status"], "pass", report)
             self.assertFalse(report["browser_errors"])
 
+    def test_content_width_at_css_zoom(self):
+        try:
+            from playwright.sync_api import sync_playwright
+        except ImportError:
+            self.skipTest('Optional Playwright not installed')
+        with sync_playwright() as pw:
+            browser, _ = ux_journey.launch(pw, None)
+            try:
+                for width in (320, 390, 768, 1024, 1440):
+                    page = browser.new_page(viewport={"width": width, "height": 900})
+                    page.set_content(self.fixture.read_text(encoding="utf-8"))
+                    for zoom in ("100%", "200%"):
+                        page.evaluate("z => document.body.style.zoom = z", zoom)
+                        overflow = page.evaluate("Math.max(document.body.scrollWidth,document.documentElement.scrollWidth)-innerWidth")
+                        self.assertLessEqual(overflow, 3, (width, zoom, overflow))
+                    page.close()
+            finally:
+                browser.close()
+
     def test_mobile_batch_entry_and_focus(self):
         self.assert_journey("390x844", [
             {"action": "expectHidden", "target": "#selectedBar"},
