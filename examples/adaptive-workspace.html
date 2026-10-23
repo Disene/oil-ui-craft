@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Craft · 响应式工作台交互样例</title>
+<style>
+:root{color-scheme:light;--blue:#2563eb;--line:#dce3ef;--ink:#243247;--sub:#66758b;--bg:#f5f7fb;--paper:#fff;font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink)}button,input,select{font:inherit}
+button{cursor:pointer;min-height:40px;border-radius:7px;border:1px solid var(--line);color:var(--ink);background:white;padding:8px 15px}
+button.primary{background:var(--blue);border-color:var(--blue);color:white}button.quiet{border-color:transparent;background:transparent;color:var(--sub)}
+button:focus-visible,input:focus-visible,select:focus-visible,[tabindex="-1"]:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+button:disabled{opacity:.55;cursor:not-allowed}
+header.site{background:#fff;border-bottom:1px solid var(--line);padding:12px max(16px,calc((100vw - 1100px)/2));display:flex;align-items:center;gap:20px}
+.brand{font-weight:800;font-size:19px;white-space:nowrap}.small{font-size:12px;color:var(--sub)}
+header.site nav{margin-left:auto;display:flex;gap:18px;color:var(--sub)}
+main{max-width:1100px;margin:28px auto;padding:0 16px}h1{font-size:25px;margin:0;font-weight:750}h2{font-size:20px;margin:0 0 18px;font-weight:750}h3{font-size:16px}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:25px}
+.actions{display:flex;align-items:center;gap:8px}.controls{display:grid;grid-template-columns:minmax(0,1fr) 220px auto;gap:12px;align-items:end;margin:0 0 18px}
+label{display:flex;flex-direction:column;gap:6px;color:var(--sub);font-size:13px}
+input[type=search],select{height:44px;border:1px solid #bfcce0;border-radius:7px;background:#fff;padding:0 12px;color:var(--ink);min-width:0}
+.content{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,.95fr);gap:22px;align-items:start}
+.surface{background:white;border:1px solid var(--line);border-radius:8px;min-width:0}
+.counterbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;color:var(--sub)}.selectedbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 12px;background:#eff4ff;color:#1746ac;border-radius:6px;margin-bottom:8px}
+.selectedbar[hidden],#bulk[hidden],#detail[hidden]{display:none!important}
+.headingrow{display:grid;grid-template-columns:44px minmax(125px,1fr) 110px 90px 110px;align-items:center;gap:10px;background:#f0f3fa;border-bottom:1px solid var(--line);font-size:12px;font-weight:600;color:var(--sub);padding:10px}
+.accountrow{display:grid;grid-template-columns:44px minmax(125px,1fr) 110px 90px 110px;align-items:center;gap:10px;border-bottom:1px solid var(--line);min-height:62px;padding:8px 10px}
+.accountrow:last-child{border-bottom:none}.accountrow.is-current{background:#f1f4fa}.accountrow.is-checked .selection{background:#e6efff}
+.selection{display:grid;place-items:center;align-self:stretch;margin:-8px -10px;padding:8px 10px}
+.selection input{height:18px;width:18px;accent-color:var(--blue)}.namebtn{border:0;background:transparent;text-align:left;padding:0;font-weight:700;overflow-wrap:anywhere;min-width:0}
+.namebtn:hover{text-decoration:underline}.perm{font-size:13px}.muted{color:var(--sub)}
+.status{border-radius:4px;padding:3px 6px;font-size:12px;background:#e9f4ee;color:#106343;white-space:nowrap}.status.off{background:#edf0f4;color:#526175}
+.detail{padding:22px}.detailhead{font-size:20px;font-weight:750;overflow-wrap:anywhere;margin:0 0 17px}
+.definition{display:grid;grid-template-columns:120px minmax(0,1fr);padding:11px 0;border-bottom:1px solid var(--line);gap:12px}.definition dt{color:var(--sub)}.definition dd{margin:0;font-weight:600}
+.detail .section{margin-top:21px}.bottom-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:19px}
+#backList{display:none;margin-bottom:14px}
+#bulk{margin-top:20px;padding:20px}.notice{padding:10px 12px;border-radius:6px;background:#f3f6fc;color:var(--sub)}.empty{padding:26px;color:var(--sub)}
+@media(max-width:900px){
+ header.site nav{display:none}main{margin:20px auto}
+ .content{grid-template-columns:1fr}
+ .accountrow{grid-template-columns:38px minmax(100px,1fr) auto;gap:7px;min-height:84px}
+ .headingrow{display:none}.accountrow .role{grid-column:2;grid-row:2}.accountrow .statuscol{grid-column:3;grid-row:2}
+ .accountrow .perm{grid-column:2/-1;grid-row:3}.selection{grid-row:1/4;grid-column:1;margin:-8px -10px}
+ .accountrow .namebtn{grid-column:2/-1;grid-row:1}
+ #detail{display:none}.detail-open #listing{display:none}.detail-open #detail{display:block}.detail-open .controls,.detail-open .actions{display:none}#backList{display:inline-flex}
+}
+@media(max-width:550px){
+ header.site{padding:12px 16px}.toolbar{align-items:start}.toolbar .actions{gap:4px}
+ .toolbar h1{font-size:21px}.toolbar .actions button{padding:6px 9px}.controls{grid-template-columns:minmax(0,1fr) 88px}.controls label:first-child{grid-column:1/-1}.controls label:nth-child(2){grid-column:1}
+ .selectedbar button{white-space:nowrap;padding:7px 10px}.detail{padding:20px 16px}
+}
+@media(prefers-reduced-motion:no-preference){button{transition:background-color .15s,border-color .15s}}
+</style>
+</head>
+<body>
+<header class="site"><div class="brand">Craft · UI 参考</div><span class="small">合成数据交互演示</span><nav aria-label="全局导航"><span>工作区</span><span>设置</span></nav></header>
+<main id="app">
+ <div class="toolbar"><h1>账号工作台</h1><div class="actions"><button class="quiet" type="button">操作记录</button><button type="button">导入</button><button type="button" class="primary">创建</button></div></div>
+ <form class="controls" id="filter"><label for="query">搜索账号<input id="query" type="search" autocomplete="off" placeholder="输入账号名称"></label>
+ <label for="state">账号状态<select id="state"><option value="all">全部状态</option><option value="on">启用</option><option value="off">停用</option></select></label>
+ <button type="submit">搜索</button></form>
+ <div class="content"><section id="listing" aria-label="账号列表">
+ <div class="counterbar"><span id="count" role="status">已加载 0 个账号</span><button id="reset" type="button">重置筛选</button></div>
+ <div class="selectedbar" id="selectedBar" hidden><strong id="selectedCount">已选 0 个</strong><button type="button" id="jump">进入批量操作</button></div>
+ <div class="surface"><div class="headingrow"><span>选择</span><span>账号</span><span>角色</span><span>状态</span><span>内容发布</span></div><div id="rows"></div></div>
+ </section>
+ <aside id="detail" class="surface detail" aria-label="账号详情">
+ <button id="backList" type="button">返回账号列表</button>
+ <h2 id="detailTitle" class="detailhead" tabindex="-1">请选择账号</h2>
+ <dl id="detailInfo"></dl>
+ <div class="section"><h3>权限</h3><dl id="permissionInfo"></dl></div>
+ <div class="bottom-actions"><button type="button" id="edit" class="primary">修改账号</button></div>
+ </aside>
+ </div>
+ <section id="bulk" class="surface" aria-labelledby="bulkTitle" hidden>
+ <h2 id="bulkTitle" tabindex="-1">批量操作</h2>
+ <p class="notice">本页面只演示选择、定位与返回，不执行账号修改或其他外部写入。</p>
+ <p id="bulkTargets"></p><div class="bottom-actions"><button id="cancelBatch" type="button">返回账号列表</button><button id="clear" type="button">清除已选</button></div>
+ </section>
+</main>
+<script>
+(()=>{'use strict';
+ const fixture=[
+  ['content-editor','内容维护者',true,false],
+  ['content-reviewer','内容维护者',true,true],
+  ['former-support','客服',false,false],
+  ['pilot-admin','管理员',true,true],
+  ['regional-support-east','客服',true,false],
+  ['regional-support-west','客服',true,false],
+  ['support-chen','客服',true,false],
+  ['support-international-long-account-name','客服',true,false],
+  ['support-lin','客服',true,false],
+  ['support-night','客服',true,false]
+ ];
+ const byId=x=>document.getElementById(x);
+ const data=fixture.map(([name,role,on,publish])=>({name,role,on,publish}));
+ const selection=new Set();
+ let current=null,lastRow=null,lastScroll=0;
+ const app=byId('app'),rows=byId('rows'),detail=byId('detail'),bulk=byId('bulk');
+ function visibleData(){const q=byId('query').value.trim().toLowerCase(),s=byId('state').value;
+  return data.filter(x=>x.name.includes(q)&&(s==='all'||(s==='on')===x.on));}
+ function cell(tag,text,className){const e=document.createElement(tag);e.textContent=text;e.className=className||'';return e;}
+ function refreshSelection(){
+  byId('selectedBar').hidden=selection.size===0;
+  byId('selectedCount').textContent='已选 '+selection.size+' 个';
+  byId('bulkTargets').textContent='当前目标：'+[...selection].join('、');
+  if(!selection.size)bulk.hidden=true;
+  rows.querySelectorAll('.accountrow').forEach(row=>{const checked=selection.has(row.dataset.name);
+    row.classList.toggle('is-checked',checked);row.querySelector('input').checked=checked;});
+ }
+ function renderRows(){
+  rows.replaceChildren();
+  const list=visibleData();byId('count').textContent='已加载 '+list.length+' 个匹配账号';
+  if(!list.length){rows.append(cell('p','没有匹配的账号','empty'));refreshSelection();return;}
+  for(const a of list){
+   const row=document.createElement('div');row.className='accountrow';row.dataset.name=a.name;row.classList.toggle('is-current',current===a.name);
+   const wrap=cell('label','','selection'),check=document.createElement('input');check.type='checkbox';check.checked=selection.has(a.name);check.setAttribute('aria-label','勾选 '+a.name);check.dataset.select=a.name;wrap.append(check);
+   const open=cell('button',a.name,'namebtn');open.type='button';open.dataset.open=a.name;open.setAttribute('aria-label','查看 '+a.name);
+   row.append(wrap,open,cell('span',a.role,'role muted'),cell('span',a.on?'● 启用':'● 停用','status statuscol'+(a.on?'':' off')),cell('span',a.publish?'可发布':'不可发布','perm'));
+   rows.append(row);
+  }
+  refreshSelection();
+ }
+ function renderDetail(){
+   const a=data.find(x=>x.name===current),title=byId('detailTitle'),info=byId('detailInfo'),perm=byId('permissionInfo');
+   title.textContent=a?a.name:'请选择账号';info.replaceChildren();perm.replaceChildren();
+   for(const [target,records] of [[info,a?[['工作角色',a.role],['账号状态',a.on?'启用':'停用']]:[]],[perm,a?[['内容发布',a.publish?'可发布':'不可发布'],['账号管理',a.role==='管理员'?'可管理':'不可管理']]:[]]]){
+    for(const [label,value] of records){const dl=cell('div','','definition');dl.append(cell('dt',label),cell('dd',value));target.append(dl);}
+   }
+   byId('edit').disabled=!a;
+ }
+ function openDetail(name,trigger){
+   lastScroll=window.scrollY;lastRow=trigger;current=name;renderRows();renderDetail();
+   app.classList.add('detail-open');detail.hidden=false;byId('detailTitle').focus({preventScroll:true});
+   if(matchMedia('(max-width:900px)').matches)window.scrollTo(0,0);
+ }
+ function backDetail(){
+   app.classList.remove('detail-open');requestAnimationFrame(()=>{
+    if(lastRow&&lastRow.isConnected){lastRow.focus({preventScroll:true});}else{
+      const row=Array.from(rows.querySelectorAll('button[data-open]')).find(n=>n.dataset.open===current);row?.focus({preventScroll:true});
+    }
+    window.scrollTo(0,lastScroll);
+   });
+ }
+ rows.addEventListener('click',e=>{
+   const trigger=e.target.closest('button[data-open]');if(trigger)openDetail(trigger.dataset.open,trigger);
+ });
+ rows.addEventListener('change',e=>{const box=e.target.closest('input[data-select]');if(!box)return;
+   if(box.checked)selection.add(box.dataset.select);else selection.delete(box.dataset.select);refreshSelection();});
+ byId('backList').addEventListener('click',backDetail);
+ byId('filter').addEventListener('submit',e=>{e.preventDefault();renderRows();});
+ byId('reset').addEventListener('click',()=>{byId('query').value='';byId('state').value='all';renderRows();});
+ byId('jump').addEventListener('click',()=>{
+   bulk.hidden=false;byId('bulkTitle').focus({preventScroll:true});bulk.scrollIntoView({block:'start'});
+ });
+ byId('cancelBatch').addEventListener('click',()=>{bulk.hidden=true;byId('jump').focus({preventScroll:true});byId('selectedBar').scrollIntoView({block:'nearest'});});
+ byId('clear').addEventListener('click',()=>{selection.clear();refreshSelection();rows.querySelector('input[data-select]')?.focus({preventScroll:true});});
+ byId('edit').addEventListener('click',()=>{alert('这是结构与交互示例：无真实写入。');});
+ renderRows();renderDetail();
+})();
+</script>
+</body></html>
