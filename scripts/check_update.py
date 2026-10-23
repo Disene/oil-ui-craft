@@ -261,7 +261,7 @@ def fork_installation() -> bool:
         header = (ROOT / "SKILL.md").read_text(encoding="utf-8")[:4096]
     except OSError:
         return False
-    return bool(re.search(r'(?m)^\\s*fork_release:\\s*[^\\s#]+', header))
+    return bool(re.search(r'(?m)^\s*fork_release:\s*[^\s#]+', header))
 
 
 def main() -> int:
