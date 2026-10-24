@@ -8,7 +8,7 @@
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink)}button,input,select{font:inherit}
 button{cursor:pointer;min-height:40px;border-radius:7px;border:1px solid var(--line);color:var(--ink);background:white;padding:8px 15px}
 button.primary{background:var(--blue);border-color:var(--blue);color:white}button.quiet{border-color:transparent;background:transparent;color:var(--sub)}
-button:focus-visible,input:focus-visible,select:focus-visible,[tabindex="-1"]:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+button:focus-visible,input:focus-visible,select:focus-visible,[tabindex="-1"]:focus-visible{outline:2px solid var(--blue);outline-offset:0}
 button:disabled{opacity:.55;cursor:not-allowed}
 header.site{background:#fff;border-bottom:1px solid var(--line);padding:12px max(16px,calc((100vw - 1100px)/2));display:flex;align-items:center;gap:20px}
 .brand{font-weight:800;font-size:19px;white-space:nowrap}.small{font-size:12px;color:var(--sub)}
@@ -18,6 +18,8 @@ main{max-width:1100px;margin:28px auto;padding:0 16px}h1{font-size:25px;margin:0
 .actions{display:flex;align-items:center;gap:8px}.controls{display:grid;grid-template-columns:minmax(0,1fr) 220px auto;gap:12px;align-items:end;margin:0 0 18px}
 label{display:flex;flex-direction:column;gap:6px;color:var(--sub);font-size:13px}
 input[type=search],select{height:44px;border:1px solid #bfcce0;border-radius:7px;background:#fff;padding:0 12px;color:var(--ink);min-width:0}
+select{appearance:none;padding-right:36px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='m2 4 4 4 4-4' stroke='%2366758b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:12px 12px}
+@media(forced-colors:active){select{appearance:auto;background-image:none}}
 .content{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,.95fr);gap:22px;align-items:start}
 .surface{background:white;border:1px solid var(--line);border-radius:8px;min-width:0}
 .counterbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;color:var(--sub)}.selectedbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 12px;background:#eff4ff;color:#1746ac;border-radius:6px;margin-bottom:8px}
