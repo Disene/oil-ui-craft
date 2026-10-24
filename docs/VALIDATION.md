@@ -1,6 +1,6 @@
 # Craft UX.2：独立实施与聚焦验证
 
-最新结论（2026-10-24）：IN-APP 浏览器已完成真实 HTTP、代表性交互、WebGL 渲染/恢复、CSS 降级及独立视觉审阅；用户指出的焦点间隙、上传区排列、下拉箭头边距已定向修复并复验。实现提交为 `8ca4f76a9b6692f7df3537163b4c6ce2e26f12e0`。具体范围与未运行项见文末最新接续记录；前面保留的 Draft/权限受限结论属于历史记录。
+最新结论（2026-10-24）：IN-APP 浏览器已完成真实 HTTP、代表性交互、WebGL 渲染/恢复、CSS 降级及独立视觉审阅；用户指出的焦点间隙、上传区排列、下拉箭头边距及账号权限列已定向修复并复验。最新实现提交为 `9a2d5cc42d6f75487343c4087b129aac4ed83fc1`。具体范围与未运行项见文末最新接续记录；前面保留的 Draft/权限受限结论属于历史记录。
 
 基线：PR #2 的 `a3faa7e257ba39219b45512c519498cd6125e1ec`。本轮不修改 StepWise、不安装用户机器 Skill、不合并或部署、不新增 Actions 或付费服务。
 
@@ -95,3 +95,10 @@
 本轮关键本地证据文件：`http-summary.json`（14 项 HTTP 状态/完成事件匹配）、`focus-before.jpg` / `focus-after.jpg`、`patterns-focus-after.jpg`、`upload-desktop-after.jpg` / `upload-mobile-after.jpg` / `upload-320-after.jpg`、`select-workspace-mobile-recheck.jpg`、`select-game-after.jpg`、`effects-context-loss.jpg` / `effects-restored.jpg`、`workspace-mobile-detail-recheck.jpg`。它们保存在本次聊天本地截图目录，未新建仓库证据包或上传机器路径、权限设置截图及个人文件。截图异常的旧图不作为验收依据。
 
 `git diff --check` 通过。实现修复限定在六个现有文件的焦点、上传排列及下拉装饰样式，未改变应用状态机。临时视口、动态效果、强制颜色与缓存覆盖均已复原。**可用标准已达到，原 PR #2 可转 Ready 供整合判断；不自动合并、安装或部署。**
+### 同轮追加：账号权限列排版
+
+用户截图确认权限列将两项权限串成单段，换行拆开“账号管理”。实现提交 `9a2d5cc42d6f75487343c4087b129aac4ed83fc1` 将列表权限改为语义 `dl`：内容发布、账号管理各占一行，名称列固定 4em，结果列对齐；极窄有效容器保留堆叠与折行能力。没有改权限值、筛选或状态机。
+
+**已通过**：桌面与 390px 实渲染截图，320px 下十个权限块均 clientWidth=scrollWidth=216、文档 clientWidth=scrollWidth=305；检查内容维护者、管理员的两项权限值及详情一致，详情返回、勾选管理员、批量入口与返回均正常。隔离视觉 Agent 查看 `permissions-desktop-after.jpg`、`permissions-mobile-after.jpg`，确认无拆词、裁切、重叠或错位；主执行者沿相同路径复核通过。`permissions-column-after.jpg` 保留修复后的列局部截图。
+
+本轮共修复四项用户实际指出的视觉问题。以上为定向浏览器回归，仍未重跑 23 项聚焦测试、完整矩阵、读屏或触屏真机；其余状态及限制沿用上表。原 PR #2 满足转 Ready 的验证条件，不自动合并、安装或部署。
