@@ -29,7 +29,14 @@ select{appearance:none;padding-right:36px;background-image:url("data:image/svg+x
 .accountrow:last-child{border-bottom:none}.accountrow.is-current{background:#f1f4fa}.accountrow.is-checked .selection{background:#e6efff}
 .selection{display:grid;place-items:center;align-self:stretch;margin:-8px -10px;padding:8px 10px}
 .selection input{height:18px;width:18px;accent-color:var(--blue)}.namebtn{border:0;background:transparent;text-align:left;padding:0;font-weight:700;overflow-wrap:anywhere;min-width:0}
-.namebtn:hover{text-decoration:underline}.perm{font-size:13px;margin:0;display:grid;gap:3px;min-width:0}.muted{color:var(--sub)}
+/* Account names are buttons, not links: use colour and row emphasis, not blanket underlines. */
+.namebtn:hover{color:#1e53c5;text-decoration:none}
+.accountrow:hover:not(.is-current){background:#f6f9ff}
+.accountrow.is-current:hover{background:#ebf1fb}
+button.primary:hover:not(:disabled){background:#1d50d6;border-color:#1d50d6}
+button.quiet:hover:not(:disabled){background:#edf2fa;color:#334d78}
+button:not(.primary):not(.quiet):not(.namebtn):hover:not(:disabled){background:#f5f8fd;border-color:#a9badd}
+.perm{font-size:13px;margin:0;display:grid;gap:3px;min-width:0}.muted{color:var(--sub)}
 .permission-line{display:grid;grid-template-columns:4em minmax(0,1fr);gap:8px}.permission-line dt,.permission-line dd{margin:0;white-space:nowrap}
 .status{border-radius:4px;padding:3px 6px;font-size:12px;background:#e9f4ee;color:#106343;white-space:nowrap}.status.off{background:#edf0f4;color:#526175}
 .detail{padding:22px}.detailhead{font-size:20px;font-weight:750;overflow-wrap:anywhere;margin:0 0 17px}
@@ -52,7 +59,19 @@ dialog{border:1px solid var(--line);border-radius:10px;padding:22px;max-width:mi
  .toolbar h1{font-size:21px}.toolbar .actions button{padding:6px 9px}.controls{grid-template-columns:minmax(0,1fr) 88px}.controls label:first-child{grid-column:1/-1}.controls label:nth-child(2){grid-column:1}
  .selectedbar button{white-space:nowrap;padding:7px 10px}.detail{padding:20px 16px}
 }
-@media(prefers-reduced-motion:no-preference){button{transition:background-color .15s,border-color .15s}}
+/* Feedback should show a state transition without turning an admin workspace into a motion demo. */
+@keyframes craft-selection-in{from{opacity:.65;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes craft-dialog-in{from{opacity:0;transform:translateY(7px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes craft-backdrop-in{from{background:#101d3400}to{background:#101d3480}}
+@media(prefers-reduced-motion:no-preference){
+ button{transition:background-color .15s,border-color .15s,color .15s,transform .12s}
+ .namebtn{transition:color .15s}
+ button:not(.namebtn):active:not(:disabled){transform:translateY(1px)}
+ .accountrow,.accountrow .selection{transition:background-color .16s}
+ .selectedbar:not([hidden]){animation:craft-selection-in .17s ease-out}
+ dialog[open]{animation:craft-dialog-in .17s cubic-bezier(.2,.75,.25,1)}
+ dialog[open]::backdrop{animation:craft-backdrop-in .17s ease-out}
+}
 /* Container breakpoints also respond when CSS zoom reduces available content width. */
 header.site{flex-wrap:wrap}.brand{white-space:normal}
 main{container-type:inline-size}.toolbar,.actions,.counterbar,.selectedbar{flex-wrap:wrap}
@@ -164,6 +183,11 @@ main{container-type:inline-size}.toolbar,.actions,.counterbar,.selectedbar{flex-
  function openDetail(name,trigger){
    lastScroll=window.scrollY;lastRow=trigger;current=name;renderRows();renderDetail();
    app.classList.add('detail-open');detail.hidden=false;byId('detailTitle').focus({preventScroll:true});
+   if(!matchMedia('(prefers-reduced-motion: reduce)').matches && detail.animate){
+    detail.getAnimations().forEach(animation=>animation.cancel());
+    detail.animate([{opacity:.7,transform:'translateY(7px)'},{opacity:1,transform:'translateY(0)'}],
+      {duration:190,easing:'cubic-bezier(.2,.75,.25,1)'});
+   }
    if(matchMedia('(max-width:900px)').matches)window.scrollTo(0,0);
  }
  function backDetail(){
