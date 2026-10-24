@@ -1,0 +1,9 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Craft · 记忆庭院</title><link rel="stylesheet" href="game.css"><script src="game.js" defer></script></head><body>
+<header><a href="../craft-patterns/index.html">← Craft 组件研究</a><span>原创游戏状态参考</span></header><main>
+<section class="game-heading"><p>MEMORY GARDEN</p><h1>记忆庭院</h1><p>翻开两张相同的植物。不是比速度，而是记住它们相遇的位置。</p></section>
+<div class="game-layout"><section class="playfield" aria-label="记忆配对游戏"><div class="hud"><span>步数 <strong id="moves">0 / 18</strong></span><span>配对 <strong id="pairs">0 / 6</strong></span><button id="pause" disabled>暂停</button></div>
+<div class="board-wrap"><div id="board" class="board" role="group" aria-label="十二张植物卡片"></div><div id="cover" class="cover"><strong id="coverTitle">准备进入庭院</strong><p id="coverText">选择挑战步数，然后开始。</p></div></div>
+<div id="outcome" role="status" tabindex="-1">尚未开始</div></section>
+<aside><h2>留意每一次翻开</h2><p>点击或按 Enter 翻牌。方向键移动焦点。匹配成功后，卡片会留在正面。</p><label for="difficulty">最多尝试次数<select id="difficulty"><option value="18">从容 · 18 步</option><option value="8">专注 · 8 步</option></select></label><button id="start" class="primary">开始游戏</button><button id="restart" disabled>重新开始</button><button id="help">查看规则</button><p class="note">离开页面会自动暂停。所有状态只在本页保留，不记录个人资料。</p></aside></div>
+<dialog id="rules" aria-labelledby="rulesTitle"><h2 id="rulesTitle">怎样完成一局？</h2><p>每次翻开两张算一步。找齐六组即获胜；用完步数则结束。暂停会遮住全部卡片，恢复后继续原局。</p><p>系统启用减少动态效果时，翻牌不依赖动画。</p><button id="closeRules">关闭规则</button></dialog>
+<footer>参考覆盖：准备、进行、待复位、暂停、胜利、失败与重新开始。无远端服务。</footer></main></body></html>

@@ -1,109 +1,46 @@
 English · [中文](README.zh-CN.md)
 
-<p align="center">
-  <img src="./assets/readme/hero.en.webp" width="100%" alt="oil-ui: push AI UI design to its limits. A person pins a yellow pushpin to the middle of three previews in different styles">
-</p>
+# Oil UI Craft
 
-<p align="center">
-  <a href="https://ui.oiloil.org/en/?utm_source=github&utm_medium=referral&utm_campaign=readme-en"><img src="./assets/readme/showcase.en.webp" width="100%" alt="Gallery highlights: an English learning app, a music year in review, hardware and component library websites, a project management tool, a ride-hailing app, a voice assistant, a checkout flow, and a film camera"></a>
-</p>
+An MIT-licensed fork of [Oil UI](https://github.com/oil-oil/oil-ui), preserving upstream design exploration, comparison, screenshot/recording and review workflows. **Not official Oil UI Pro**, with no private Pro source or claim of one-to-one equivalence.
 
-Oil UI is an interface design skill for AI agents. It explores a few genuinely different design directions side by side, lets you choose one, then refines it against real screenshots. It works for websites, apps, dashboards, and components. See more designs at [ui.oiloil.org](https://ui.oiloil.org/en/?utm_source=github&utm_medium=referral&utm_campaign=readme-en).
+Upstream version: `0.24.2`. Independent extension: `craft-ux.2`. An open PR is not an installed release; normal installation reads `main`.
 
-## How it designs
+## Available work
 
-1. **Understand what the product is.** Before drawing anything, it names the product category, finds two or three peers with the most distinctive styles, and looks at what they do and why. Then it decides what to keep and what to change.
-2. **Turn “premium” and “clean” into real decisions.** Everyone uses these words, but they don't tell you what to put on the screen. It first sets the tone from the subject, audience, and brand voice, such as lively or calm, polished or raw, dense or airy. Then it turns that tone into visible choices: which typefaces, how much white space, and how much of the page uses color.
-3. **Start each direction from something concrete.** That could be a material in its setting, a scene, a character, or the visual language of another field. Ideas come from the product itself, not from adjectives like “minimal” or “bold.”
-4. **Decide who the first screen is for.** On pages where people browse, shop, or get work done, the first screen should be the content itself. Only pages meant to persuade need a designed opening layout, settled before the copy is written.
-5. **Make the directions truly different.** Of layout, typography, color, and key imagery, any two directions may share at most one. Once the previews exist, it puts them side by side and squints at the light and dark shapes of each first screen. If two look alike, it changes the layout instead of just swapping colors.
-6. **Leave one moment people remember.** Instead of pushing every part of the page, it makes one or two details exceptional, such as the response to a tap, a successful payment, AI at work, or a 404 page. Everything else stays quiet.
-7. **You decide what looks right.** The previews go on one comparison page. You pick one and say what you like and dislike, and it tightens the design around your feedback before going further.
-8. **Trust the real screen.** When a page is done, it opens it at desktop and mobile sizes and checks screenshots. You can also bring in a reviewer who hasn't seen the work in progress. Last comes a round of subtraction: one focal point per page, and no copy, lines, or boxes that don't help you understand it.
+- Task-scoped existing-product, workbench, interaction and bounded review guidance.
+- **19 original patterns**: six spatial card compositions and thirteen interactive studies with real local state changes.
+- SVG flow, Canvas dot field and WebGL gradient implementation, including pause, reduced motion and static CSS fallback. **The WebGL path has not run successfully in the current test environment.**
+- A playable memory game with ready, playing, mismatch, pause, win, loss and restart states.
+- Optional filename/metadata-blinded screenshot packets and evidence-linked review validation. The tool **does not call a model or certify reviewer independence**.
+- Optional browser journeys, conservative evidence summaries and a guard against replacing this fork with an upstream in-place update.
 
-For more usable interfaces, existing project redesigns, or effects such as light trails and dot patterns, see [Oil UI Pro](https://ui.oiloil.org/en/pro/?utm_source=github&utm_medium=referral&utm_campaign=readme-en). The differences are listed [below](#open-source-and-pro).
+[Example index](examples/index.html) · [Component reference](references/craft-components.md) · [Effects and game](references/craft-effects-games.md) · [Validation](docs/VALIDATION.md)
 
-## Installation
+All demo content is synthetic. No remote assets, model calls, payments or real account writes. Adapt only the relevant pattern to a project's existing design system and business contracts.
 
-Send this to an agent that can install skills:
+## Installation and updates
 
-```text
-Install this skill for me: run npx skills add Disene/oil-ui-craft
-```
-
-Or run this in your terminal:
-
-```bash
+```sh
 npx skills add Disene/oil-ui-craft
 ```
 
-It's ready to use right after installation, with nothing to configure. When a new version is out, your agent mentions it at the end of a reply; ask it to update whenever you like. If you already have Oil UI Pro, you don't need the open-source version. Installing both makes them compete for the same requests.
+The Skill remains named `oil-ui`; avoid simultaneously enabling duplicate installations. Review upstream changes inside this fork before updating installed copies. The retained updater refuses the official CLI's `--update` when fork metadata is present.
 
-If you use DeepSeek Harness, install the native plugin [dsh-oil-ui](https://github.com/oil-oil/dsh-oil-ui) (`dsh plugin --profile web add github:oil-oil/dsh-oil-ui`; it includes the free edition and automatically detects a local Oil UI Pro installation).
+## Verification
 
-## Usage
+Python 3.10+; Playwright and an approved Chromium installation are optional test dependencies. Do not bypass browser or organizational policies.
 
-Tell your agent what you need, for example:
+```sh
+python -m unittest discover -s tests -p 'test_craft*.py' -v
+python -m unittest discover -s tests -p 'test_fork_update.py' -v
+python -m unittest discover -s tests -p 'test_review_packet.py' -v
+```
 
-- “Use oil-ui to explore a few design directions for this course booking product and build pages I can preview.”
-- “Create three designs with different typography, colors, and compositions. Put them on a comparison page so I can choose.”
-- “Polish this page using the project’s existing design guidelines.”
-- “Review this homepage and explain what to change and how. Leave the files untouched.”
-- “Recreate this page from the screenshot and add a mobile layout too.”
+This batch: **23 focused tests passed, zero skipped**, using complete static pages loaded in memory. Not the full upstream test suite. HTTP navigation was blocked by browser policy; WebGL used the CSS fallback. Native browser zoom, screen readers, real devices, independent-agent review and production usability have not been certified. No new GitHub Actions workflows or paid services.
 
-Share any brand assets, screenshots, or existing project you have. It can start without references and only asks you questions when the deliverable is unclear.
+## Attribution
 
-## Built-in style comparison page
+The upstream engine and methods remain credited to [oil-oil/oil-ui](https://github.com/oil-oil/oil-ui). Public capability references: [upstream comparison](https://github.com/oil-oil/oil-ui/blob/main/README.zh-CN.md#开源版和-pro) and [official introduction](https://ui.oiloil.org/intro/). New workbench categories, components, effects and game examples are independent implementations, not copies of proprietary Pro assets.
 
-<p align="center">
-  <img src="./assets/readme/proof-mona-lisa.webp" width="100%" alt="Style comparison page: three directions for the same Mona Lisa exhibition page, titled Thirty Centimeters, Extra! 1911, and Sfumato">
-</p>
-
-When you want to compare designs, it puts them side by side on one page. They can be HTML files, images, or running development pages, and the current version can go first as a baseline. You can switch between desktop and mobile sizes, open each one at actual size, and browse with the arrow keys. Click “Select” on the one you like, paste the copied sentence into your agent, and it carries on from there.
-
-## Open source and Pro
-
-<p align="center">
-  <img src="./assets/readme/proof-van-gogh.webp" width="100%" alt="Full version style comparison page: three directions for a Van Gogh exhibition page, titled To Theo, Brushstrokes, and East Window">
-</p>
-
-The open-source version takes a new page from a blank start to a good-looking design. Pro builds on that: it makes interfaces easier to use, improves existing projects, and raises the quality bar with stricter review and polishing.
-
-| | Oil UI (open source) | Oil UI Pro |
-| --- | :---: | :---: |
-| Design direction: product category, tone, distinct directions, comparison page | ✓ | ✓ |
-| Visuals: hierarchy, typography, color, spacing, imagery, and motion | ✓ | ✓ |
-| Memorable moments and scroll storytelling (parallax, continuous shots) | ✓ | ✓ |
-| Screenshot recreation | ✓ | ✓ |
-| Pacing, feel, generated assets, and real-time 3D for mini-games | ✓ | ✓ |
-| Independent review | Visual scoring and a lightweight UX walkthrough | Repeated review and revision aiming for 9/10; checks whether directions overlap; autonomous risk probes and same-path UX rechecks |
-| Polish: checks for AI design defaults, a detail checklist, and how to simplify | | ✓ |
-| Usability: interactions and states, forms, dialogs and popovers, desktop and mobile layouts | | ✓ |
-| Dashboards and tools: workspace layouts chosen for the product, with one style throughout | | ✓ |
-| Existing projects: separate approaches for a UI refresh, a flow fix, and a new feature | Tells you which one you need | ✓ |
-| Polish a single component to the extreme | | ✓ |
-| 19 card prototypes with code and spatial expansion containers | | ✓ |
-| Effects such as light trails, dot patterns, and flowing gradients | | ✓ |
-| Scene layouts, visuals, and state checks for mini-games | | ✓ |
-
-Oil UI Pro costs $9.99: a one-time purchase with lifetime updates. Purchase it at [ui.oiloil.org/pro](https://ui.oiloil.org/en/pro/?utm_source=github&utm_medium=referral&utm_campaign=readme-en).
-
-## Version checks
-
-Each time it is used, the Skill checks for a newer version, going online at most once every 10 minutes. It only reads the public version list at ui.oiloil.org and uploads nothing from your project. By default it only tells you about an update; it downloads and replaces nothing unless you explicitly ask it to update. Results are cached in `~/.local/state/oil/` (or `XDG_STATE_HOME` when set; `%LOCALAPPDATA%\oil\` on Windows). It needs Python 3. Set `OIL_NO_UPDATE_CHECK=1` to turn it off.
-
-## Use with
-
-- [oil-motion](https://github.com/oil-oil/oil-motion): Turn generated videos or frame sequences into web animation controlled by scrolling or dragging, such as product teardowns or camera fly-throughs. Use it for a striking opening animation.
-- [oil-tone](https://github.com/oil-oil/oil-tone): Rewrites headings, descriptions and intro copy so they read naturally and clearly, in Chinese or English. Use it when the copy feels machine-written or awkward.
-
-## License
-
-[MIT](LICENSE)
-
-
-## Optional engineering extension in this fork
-
-This fork preserves the MIT-licensed [upstream Oil UI](https://github.com/oil-oil/oil-ui) design workflow. **It is not official Oil UI Pro** and makes no claim of source or feature parity with the private Pro edition.
-
-For changed real user flows only, see [engineering acceptance](references/engineering-acceptance.md) (Chinese). `scripts/ux_journey.py` checks browser interactions; `scripts/ux_gate.py` summarizes its result alongside upstream `shoot.mjs` reports, without mistaking tool success for visual/UX acceptance. Playwright is optional and the upstream Skill works without it. Project-specific rules remain in each project, not in the shared Skill.
+[MIT license](LICENSE); upstream copyright notice is preserved.

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Craft Cards · 六种信息结构与空间展开</title>
+  <link rel="stylesheet" href="cards.css">
+  <script src="cards.js" defer></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="#main"><span class="brand-mark">C.</span><span>CRAFT <b>LAB</b></span></a><span class="top-note">Independent UI patterns · 2026</span><a href="#catalog" class="navlink">查看原型 <span aria-hidden="true">↘</span></a></header>
+<main id="main">
+  <div class="intro">
+    <div class="eyebrow"><span class="eyebrow-line"></span> INTERACTION STUDIES · 01</div>
+    <h1>一张卡片，<em>一种思考方式。</em></h1>
+    <div class="intro-meta"><p>六套独立构图，分别为监控、账单、流程、展览、任务队列和成员权限设计。点击卡片的操作入口，观察空间展开、内容层级和键盘返回。</p><div class="legend"><span class="legend-dot"></span> 合成演示数据 · 无网络请求和真实写入</div></div>
+  </div>
+  <nav aria-label="更多原创示例" style="display:flex;flex-wrap:wrap;gap:18px;margin:0 0 24px;font-size:14px"><a href="../craft-patterns/index.html">07—19 交互组件 →</a><a href="../craft-effects/index.html">特效材料 →</a><a href="../craft-game/index.html">游戏状态 →</a></nav>
+  <section id="catalog" aria-labelledby="catalog-title">
+    <div class="sectionline"><h2 id="catalog-title">六种结构 / Six archetypes</h2><span>01 — 06</span></div>
+    <div class="gallery">
+      <article class="design-card signal" aria-labelledby="signal-title">
+        <div class="signal-head"><div><span class="index">01 / SIGNAL</span><h3 id="signal-title">系统信号</h3></div><span class="signal-live"><i></i>正常运行</span></div>
+        <div class="signal-body"><div class="signal-score"><strong>99.2<span>%</span></strong><small>本周可用率 <span class="signal-delta">↑ 0.4%</span></small></div><div class="signal-graph" aria-label="最近七日可用率趋势示意"><svg viewBox="0 0 280 88" role="img" aria-label="总体走势平稳，最后一日略升"><path d="M1 70L40 61 77 69 116 40 155 49 195 28 238 36 279 10" fill="none" stroke="#3a78de" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 70L40 61 77 69 116 40 155 49 195 28 238 36 279 10L279 88L1 88Z" fill="url(#fade)"/><defs><linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#5085e5" stop-opacity=".20"/><stop offset="1" stop-color="#5085e5" stop-opacity="0"/></linearGradient></defs></svg></div></div>
+        <div class="signal-foot"><span>观测窗口 · 最近 7 天</span><button type="button" class="text-action" data-card="signal">查看信号明细 <span aria-hidden="true">↗</span></button></div>
+      </article>
+
+      <article class="design-card ledger" aria-labelledby="ledger-title"><div class="ledger-top"><span class="index">02 / LEDGER</span><span class="ledger-ref">Nº 0247</span></div><div class="ledger-title"><div>结算月报</div><h3 id="ledger-title">刊期 / 九月</h3></div><div class="ledger-amount"><span>应结算总额</span><strong>¥ 8,640<span>.00</span></strong></div><div class="ledger-rows"><div><span>3 位作者</span><b>已核对 2 位</b></div><div><span>待补资料</span><b>1 笔</b></div></div><button type="button" class="ledger-open" data-card="ledger"><span>打开结算详情</span><span aria-hidden="true">↗</span></button></article>
+
+      <article class="design-card route" aria-labelledby="route-title"><div class="route-head"><span class="index">03 / ROUTE</span><span>WORKFLOW · 04</span></div><h3 id="route-title">从想法，到交付。</h3><p>把最复杂的步骤，收在一条清晰的路径里。</p><ol class="route-steps"><li class="done"><span>01</span><b>梳理目标</b><small>已完成</small></li><li class="done"><span>02</span><b>设计方向</b><small>已完成</small></li><li class="now"><span>03</span><b>原型验证</b><small>进行中</small></li><li><span>04</span><b>交付上线</b><small>待开始</small></li></ol><button type="button" data-card="route" class="route-open">查看完整路径 <span aria-hidden="true">↗</span></button></article>
+
+      <article class="design-card atelier" aria-labelledby="atelier-title"><div class="atelier-visual" aria-hidden="true"><div class="atelier-sun"></div><div class="atelier-disc disc-a"></div><div class="atelier-disc disc-b"></div><div class="atelier-line"></div></div><div class="atelier-content"><span class="index">04 / EDITORIAL</span><h3 id="atelier-title">器物与<br><em>日常之光</em></h3><p>十一月的临水手作展</p><button type="button" data-card="atelier" class="atelier-open">走进展览 <span aria-hidden="true">↗</span></button></div></article>
+
+      <article class="design-card dispatch" aria-labelledby="dispatch-title"><div class="dispatch-head"><span class="index">05 / DISPATCH</span><span class="dispatch-pill">今日 · 6 项</span></div><h3 id="dispatch-title">今天先做什么？</h3><div class="dispatch-stack"><div class="dispatch-item first"><i>1</i><span>核对 3 个待反馈问题<small>需要人工判断</small></span><b>优先</b></div><div class="dispatch-item second"><i>2</i><span>整理知识库变更<small>已有草稿</small></span><b>待办</b></div><div class="dispatch-item third"><i>3</i><span>检查更新结果<small>今天 16:00</small></span><b>稍后</b></div></div><button type="button" class="dispatch-open" data-card="dispatch">展开今日任务 <span aria-hidden="true">↗</span></button></article>
+
+      <article class="design-card people" aria-labelledby="people-title"><div class="people-head"><span class="index">06 / MEMBERSHIP</span><span class="people-dots" aria-label="三位成员"><i>M</i><i>R</i><i>L</i></span></div><div class="people-title"><h3 id="people-title">一眼看清，<br>谁能做什么。</h3><p>用清晰的状态而不是含糊的颜色。</p></div><div class="people-access"><div><span>内容发布</span><strong>允许</strong></div><div><span>账号管理</span><strong class="not-allowed">不允许</strong></div></div><button type="button" class="people-open" data-card="people">查看成员权限 <span aria-hidden="true">↗</span></button></article>
+    </div>
+  </section>
+  <div class="footer-note"><span>CRAFT LAB / independent prototypes</span><span>原型不连接后端，不模拟成功写入。</span></div>
+</main>
+<dialog id="cardDialog" aria-labelledby="panelTitle" aria-describedby="panelLead"><div class="sheet-shell"><button type="button" id="closePanel" class="close-sheet" aria-label="关闭详情">×</button><div class="sheet-kicker" id="panelKicker"></div><h2 id="panelTitle" tabindex="-1"></h2><p id="panelLead"></p><div class="sheet-body" id="panelBody"></div><div class="sheet-foot"><span>INTERACTION STUDY · 展开与返回焦点</span><button id="donePanel" type="button">返回卡片</button></div></div></dialog>
+</body></html>
