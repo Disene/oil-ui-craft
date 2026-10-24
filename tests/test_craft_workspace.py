@@ -98,5 +98,61 @@ class WorkspaceFixtureTests(unittest.TestCase):
         ])
 
 
+    def test_account_name_hover_is_not_underline(self):
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as pw:
+            browser, _ = ux_journey.launch(pw, None)
+            try:
+                for motion in ("no-preference", "reduce"):
+                    page = browser.new_page(viewport={"width": 1440, "height": 900}, reduced_motion=motion)
+                    page.set_content(self.fixture.read_text(encoding="utf-8"))
+                    button = page.locator('button[data-open="content-editor"]')
+                    original = button.evaluate('(el) => getComputedStyle(el).color')
+                    button.hover()
+                    # Wait for the cosmetic transition to settle, not for an asynchronous business state.
+                    page.wait_for_timeout(210 if motion == "no-preference" else 15)
+                    self.assertEqual(button.evaluate('(el) => getComputedStyle(el).textDecorationLine'), 'none')
+                    self.assertNotEqual(button.evaluate('(el) => getComputedStyle(el).color'), original)
+                    row = page.locator('.accountrow').first
+                    self.assertNotEqual(row.evaluate('(el) => getComputedStyle(el).backgroundColor'), 'rgba(0, 0, 0, 0)')
+                    page.close()
+            finally:
+                browser.close()
+
+    def test_interaction_motion_and_reduced_motion(self):
+        from playwright.sync_api import sync_playwright, expect
+        with sync_playwright() as pw:
+            browser, _ = ux_journey.launch(pw, None)
+            try:
+                for motion in ("no-preference", "reduce"):
+                    page = browser.new_page(viewport={"width": 390, "height": 844}, reduced_motion=motion)
+                    page.set_content(self.fixture.read_text(encoding="utf-8"))
+                    page.evaluate('''() => {
+                      window.__detailMotionCalls = 0;
+                      const original = Element.prototype.animate;
+                      Element.prototype.animate = function(...args) {
+                        if (this.id === 'detail') window.__detailMotionCalls++;
+                        return original.apply(this, args);
+                      };
+                    }''')
+                    page.locator('button[data-open="content-reviewer"]').click()
+                    expect(page.locator('#detailTitle')).to_be_focused()
+                    self.assertEqual(page.evaluate('window.__detailMotionCalls'), 1 if motion == 'no-preference' else 0)
+                    page.locator('#backList').click()
+                    expect(page.locator('button[data-open="content-reviewer"]')).to_be_focused()
+                    page.locator('input[data-select="content-editor"]').check()
+                    selected_animation = page.locator('#selectedBar').evaluate('(el) => getComputedStyle(el).animationName')
+                    self.assertEqual(selected_animation, 'craft-selection-in' if motion == 'no-preference' else 'none')
+                    page.locator('[data-demo="导入"]').click()
+                    expect(page.locator('#closeDialog')).to_be_focused()
+                    dialog_animation = page.locator('#infoDialog').evaluate('(el) => getComputedStyle(el).animationName')
+                    self.assertEqual(dialog_animation, 'craft-dialog-in' if motion == 'no-preference' else 'none')
+                    page.keyboard.press('Escape')
+                    expect(page.locator('[data-demo="导入"]')).to_be_focused()
+                    page.close()
+            finally:
+                browser.close()
+
+
 if __name__ == "__main__":
     unittest.main()
