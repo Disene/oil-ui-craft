@@ -102,3 +102,18 @@
 **已通过**：桌面与 390px 实渲染截图，320px 下十个权限块均 clientWidth=scrollWidth=216、文档 clientWidth=scrollWidth=305；检查内容维护者、管理员的两项权限值及详情一致，详情返回、勾选管理员、批量入口与返回均正常。隔离视觉 Agent 查看 `permissions-desktop-after.jpg`、`permissions-mobile-after.jpg`，确认无拆词、裁切、重叠或错位；主执行者沿相同路径复核通过。`permissions-column-after.jpg` 保留修复后的列局部截图。
 
 本轮共修复四项用户实际指出的视觉问题。以上为定向浏览器回归，仍未重跑 23 项聚焦测试、完整矩阵、读屏或触屏真机；其余状态及限制沿用上表。原 PR #2 满足转 Ready 的验证条件，不自动合并、安装或部署。
+
+
+## 2026-10-24：账号工作台动效与悬停下划线定向修复
+
+用户反馈：工作台几乎没有动效，账号名称鼠标悬停出现固定下划线。源码确认为设计演示中的真实行为：原先只为按钮背景/边框设置约 150ms 过渡，账号名称虽是 `<button>`，却通过 `.namebtn:hover{text-decoration:underline}` 模仿超链接。
+
+修复限定在 `examples/adaptive-workspace.html` 与对应 `tests/test_craft_workspace.py`：
+
+- 账号名称 hover 改为颜色强调、无下划线；账号行 hover 用低对比背景反馈；真实链接的语义和样式不做全站覆盖。
+- 按钮 hover/press、选择后工具栏入场、详情切换与原生 Dialog 展开分别采用约 120–190ms 的微动效；不增加持续循环或装饰性动画。
+- `prefers-reduced-motion: reduce` 下关闭新增动画和过渡；键盘焦点轮廓、Escape/返回焦点、批量选择状态保留。
+
+**本轮实际验证**：Python 3.13 + 系统 Chromium + Playwright，完整作者 HTML 用 `set_content` 装载；新增两项测试加原五项，执行 `python -m unittest discover -s tests -p test_craft_workspace.py -v`，**7/7 PASS，0 失败/跳过**。覆盖 390px/1440px、CSS 200% 不溢出、hover 计算样式无 underline、reduce 与普通模式动画开关、详情/弹窗焦点回归、批量勾选操作。实际查看了相同视口的前后截图；这次没有重新做 HTTP 网络加载、原生浏览器缩放、全量上游测试或用户真人体验。
+
+实施版本：工作台 Git blob `acb0df640cc6ec6f23c1a75aa47005677b79d3bc`、聚焦测试 Git blob `43f326e4d14ca1ab72434723bef182facde49727`，与 Chat 中已跑测试源码一致。历史 HTTP/WebGL 验证仍属于先前提交及记录，不能冒充本轮重新执行；未修改真实业务项目、生产环境或其他组件示例。
