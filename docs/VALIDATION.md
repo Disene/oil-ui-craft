@@ -1,6 +1,6 @@
 # Craft UX.2：独立实施与聚焦验证
 
-最新结论（2026-10-24）：IN-APP 浏览器已完成真实 HTTP、代表性交互、WebGL 渲染/恢复、CSS 降级及独立视觉审阅；用户指出的焦点间隙、上传区排列、下拉箭头边距及账号权限列已定向修复并复验。最新实现提交为 `9a2d5cc42d6f75487343c4087b129aac4ed83fc1`。具体范围与未运行项见文末最新接续记录；前面保留的 Draft/权限受限结论属于历史记录。
+最新结论（2026-10-24）：以远端 `0c7af400d09bf16e7105c216f61ac3651b30accc` 为基线，在 IN-APP 浏览器完成工作台最新动效、悬停语义及此前四项视觉问题的定向复核，未发现遗留阻塞缺陷，本轮不改实现。已具备本次候选的合并条件，保持 Ready，等待用户批准合并；前轮 23/23、后续工作台 7/7、完整 HTTP/WebGL 及独立视觉证据按各自提交范围复用，未冒充本轮重跑。详情与未运行项见文末；旧 Draft/权限受限结论属于历史记录。
 
 基线：PR #2 的 `a3faa7e257ba39219b45512c519498cd6125e1ec`。本轮不修改 StepWise、不安装用户机器 Skill、不合并或部署、不新增 Actions 或付费服务。
 
@@ -117,3 +117,36 @@
 **本轮实际验证**：Python 3.13 + 系统 Chromium + Playwright，完整作者 HTML 用 `set_content` 装载；新增两项测试加原五项，执行 `python -m unittest discover -s tests -p test_craft_workspace.py -v`，**7/7 PASS，0 失败/跳过**。覆盖 390px/1440px、CSS 200% 不溢出、hover 计算样式无 underline、reduce 与普通模式动画开关、详情/弹窗焦点回归、批量勾选操作。实际查看了相同视口的前后截图；这次没有重新做 HTTP 网络加载、原生浏览器缩放、全量上游测试或用户真人体验。
 
 实施版本：工作台 Git blob `acb0df640cc6ec6f23c1a75aa47005677b79d3bc`、聚焦测试 Git blob `43f326e4d14ca1ab72434723bef182facde49727`，与 Chat 中已跑测试源码一致。历史 HTTP/WebGL 验证仍属于先前提交及记录，不能冒充本轮重新执行；未修改真实业务项目、生产环境或其他组件示例。
+
+## 2026-10-24：远端 0c7af40 的 HTTP 定向复核与合并判断
+
+### 对象与反馈
+
+接续时远端 PR #2 HEAD 为 `0c7af400d09bf16e7105c216f61ac3651b30accc`，工作目录干净，已 fast-forward 到该提交。读取了 PR 当前描述、全部讨论及行内审阅线程；最新反馈为账号工作台动效与悬停下划线修复记录，行内审阅线程为空。当前描述中仍将 `bc407d5` 写成最新 HEAD，本轮同步修正文档和 PR 元数据，不修改已通过复核的实现。
+
+工作台 HTML Git blob 为 `acb0df640cc6ec6f23c1a75aa47005677b79d3bc`，测试文件 Git blob 为 `43f326e4d14ca1ab72434723bef182facde49727`，与前节 7/7 的测试对象一致。相对 `bc407d5`，示例运行时代码只有工作台变化，其他五页及其资源未变；历史 WebGL、完整 HTTP 和独立视觉证据继续按原范围使用。
+
+### 本轮实际运行
+
+使用现有本机 origin `http://127.0.0.1:8765` 的真实 HTTP 页面；桌面视口 1207×892，工作台窄屏 390×844，上传区抽查 320×700。没有重跑 Python 聚焦测试或完整矩阵，也没有增加测试体系、功能、Actions 或依赖。
+
+| 项目 | 状态 | 实际观察 |
+| --- | --- | --- |
+| 工作台 HTTP 与控制台 | 已通过 | 新载入文档响应 200 / text/html、内联 SVG 正常；本轮采集未出现 loadingFailed、未捕获 Runtime 异常或 warn/error。只称工作台本轮 HTTP 通过，不重报整套 14 URL 已重跑 |
+| 普通模式真实动效 | 已通过 | 通过临时浏览器观测记录到 selectedBar 的 craft-selection-in、Dialog 的 craft-dialog-in 及 backdrop 的起止事件；透明度由中间值到 1。详情 WAAPI 实际运行 190ms，transform 从 translateY(7px) 到 none 并完成；不是仅检查 CSS 声明 |
+| 悬停与非链接语义 | 已通过 | 实际指针移入账号按钮，:hover=true、文字颜色/行底色变化，textDecorationLine=none；移开后无下划线。减少动效模式下再次 hover 仍无下划线，颜色为 rgb(30,83,197)、transitionDuration=0s。程序聚焦的详情标题也无下划线 |
+| 减少动态效果 | 已通过 | 390px reduce 模式下，详情未调用 WAAPI、工具栏及 Dialog animationName=none、按钮 transitionDuration=0s；详情、勾选、弹窗及 Escape/返回焦点照常；观察器没有记录新增 CSS/详情动画 |
+| 代表性交互 | 已通过 | 桌面勾选→批量入口→返回焦点到 jump；详情切换→导入 Dialog→Escape 焦点返回导入；390px 列表→长账号详情→返回原账号按钮，详情标题完整、两项权限可读，文档 clientWidth=scrollWidth=390 |
+| 焦点轮廓与下拉箭头 | 已通过 | 账号状态 select 经键盘 Tab 获得 :focus-visible；outline-offset=0px，箭头 right 12px、右 padding 36px，未见回退 |
+| 权限列视觉 | 已通过 | 桌面与 390px 实际截图中两项权限各占一行、名称和值对齐；长账号详情没有拆词异常、裁切或横向溢出 |
+| 上传区视觉 | 已通过 | 未改动的组件页抽查 320px，图标/按钮中心 Y 同为 580.34375，document clientWidth=scrollWidth=305，焦点 offset=0px；视觉确认同排且可辨。选择/清除行为沿用前轮实测证据，本轮未重复选文件 |
+| 历史测试/其他示例 | 复用，不重复运行 | 23/23 原聚焦测试、后续工作台 7/7、六页 14 URL 完整 HTTP、WebGL 渲染/恢复和 CSS 降级、游戏胜败、独立视觉审阅均按原记录及源码范围引用；7/7 与原 23 项有重叠，不相加为 30 项 |
+| 本轮未运行/环境边界 | 明确保留 | 未重跑 WebGL/context loss、游戏全流程、完整矩阵、CSS 200% 或原生浏览器缩放、触屏真机、读屏及生产业务；Chrome 工具历史授权问题未重新诊断。本轮为主执行者视觉复核，不冒充新增独立 Agent 审阅 |
+
+本轮本地证据：`latest-motion-evidence.json`、`latest-http-events.json`、`latest-workspace-hover.jpg`、`latest-workspace-dialog.jpg`、`latest-workspace-mobile-detail.jpg`、`latest-workspace-reduced.jpg`、`latest-upload-320.jpg`、`latest-workspace-final.jpg`。沿用当前聊天本地证据目录，未创建仓库证据包、上传机器路径或个人文件。临时动画观测包装通过重新载入清除，视口、减少动效及缓存覆盖均已复原。
+
+### 判断
+
+**已具备本次候选的合并条件：未发现已知遗留阻塞缺陷。** GitHub 在受审 HEAD 上返回 Ready（非 Draft）、MERGEABLE、mergeStateStatus=CLEAN；没有未解决行内审阅线程。statusCheckRollup 为空，表示没有报告自动检查，不能表述为 CI 全绿或已有外部批准。既有 7/7 与本轮 HTTP/浏览器证据支持当前判断；本节列出的未运行项仍保留其边界。
+
+本轮仅更新现有验证记录及 PR 摘要。待用户批准后才可合并；未修改 StepWise，未合并、安装或部署。
