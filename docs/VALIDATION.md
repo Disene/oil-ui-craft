@@ -1,6 +1,6 @@
 # Craft UX.2：独立实施与聚焦验证
 
-最新结论（2026-10-24）：以远端 `0c7af400d09bf16e7105c216f61ac3651b30accc` 为基线，在 IN-APP 浏览器完成工作台最新动效、悬停语义及此前四项视觉问题的定向复核，未发现遗留阻塞缺陷，本轮不改实现。已具备本次候选的合并条件，保持 Ready，等待用户批准合并；前轮 23/23、后续工作台 7/7、完整 HTTP/WebGL 及独立视觉证据按各自提交范围复用，未冒充本轮重跑。详情与未运行项见文末；旧 Draft/权限受限结论属于历史记录。
+最新候选（2026-10-31）：同步上游 `56240e1` / Oil UI `0.28.0`，Fork 标记为 `craft-ux.3`，保留 Craft 按需增强与更新保护，排除新增 Actions。受影响范围 12/12 定向测试及新版截图工具的列表→详情序列图检查通过；未重跑完整矩阵。本候选尚未合并，本机安装仍为 `craft-ux.2`，77 个文件未变。具体证据与未运行项见文末同步记录；此前 PR #2 的合并/安装记录属于历史基线。
 
 基线：PR #2 的 `a3faa7e257ba39219b45512c519498cd6125e1ec`。本轮不修改 StepWise、不安装用户机器 Skill、不合并或部署、不新增 Actions 或付费服务。
 
@@ -150,3 +150,42 @@
 **已具备本次候选的合并条件：未发现已知遗留阻塞缺陷。** GitHub 在受审 HEAD 上返回 Ready（非 Draft）、MERGEABLE、mergeStateStatus=CLEAN；没有未解决行内审阅线程。statusCheckRollup 为空，表示没有报告自动检查，不能表述为 CI 全绿或已有外部批准。既有 7/7 与本轮 HTTP/浏览器证据支持当前判断；本节列出的未运行项仍保留其边界。
 
 本轮仅更新现有验证记录及 PR 摘要。待用户批准后才可合并；未修改 StepWise，未合并、安装或部署。
+
+## 2026-10-31：上游 0.28.0 同步候选（craft-ux.3）
+
+### 基线与整合决定
+
+- Fork 基线：已合并 PR #2 的 `84e67152b1acbff661d35ae75bbece0290982b60`；上游固定为 `56240e1f9600088b6e658c9c2b37acbb91bfb95b`（0.28.0），共同基线为 `a66a177`。同步分支 `codex/sync-oil-ui-0.28.0`。
+- 吸收上游主流程、默认单方向/显式探索、只读评审、任务工作区、轻量证据规则，以及截图根目录、序列帧、同比例裁切和图片路径修正。
+- `SKILL.md` 人工整合：version=0.28.0 / fork_release=craft-ux.3；保留 Fork 更新保护、Craft 按需路由、可选精修与工程核验，不恢复官方自动检查命令、allowed-tools 或付费推荐入口。已选方向和存量任务仍沿用主入口的局部路径，不强迫重新探索。
+- 两份 README 保留 Fork 身份与安装说明，更新候选版本及历史证据范围；不把旧“WebGL 未运行”说明继续当成最新状态。
+- 上游新增 `.github/workflows/tests.yml` 从最终合并树排除。本分支保留上游 Git 祖先以便后续同步，但 PR 相对 Fork main 的文件差异不包含 Actions。
+- `examples/`、`assets/`、全部 `references/craft-*.md`、工程旅程与更新保护实现保持原样；不新增功能、不改 StepWise、不更新本机安装。
+
+### 实际验证
+
+Windows 本机 Python 3.10.11、Node 24.0.1、已安装 Google Chrome；未安装新依赖。运行既有用例的选定子集，**共 12/12 通过、0 失败、0 跳过**，一次运行约 29 秒。
+
+| 既有测试范围 | 结果 | 直接覆盖 |
+| --- | --- | --- |
+| `test_workdir.WorkdirTests` | 5/5 | 过程文件忽略与任务隔离；显式静态服务根和共享 CSS；拒绝越界/过宽根及敏感文件/符号链接泄漏；素材缓存、对比页和正式图片/srcset 输出路径 |
+| `test_fork_update.ForkUpdateProtection` | 1/1 | 含 fork_release 的安装拒绝上游 --update，不发起网络/npm，不改 Skill 或写更新状态 |
+| `test_shoot.ShootCLITests.test_stitch_scale_crop_forms_and_actionable_errors` | 1/1 | 同比与裁切参数、错误提示 |
+| `test_shoot.ShootBrowserTests` 的三个新用例 | 3/3 | 共有元素同比缩放后裁切；--frames 不编码视频（普通及 evidence）；编辑器/面板中的内容卡片 lint |
+| `test_prep_image.PrepImageCLITests.test_parse_args_and_windows_file_url` | 1/1 | Windows 路径编码与参数形式；实际图片输出另由工作区用例覆盖 |
+| `test_oiloil_image.OiloilImageTests.test_recovery_command_quotes_literal_paths_for_the_shell` | 1/1 | Windows 恢复命令路径/字面量转义；仅使用测试回环服务与假凭据，不调用真实生图服务 |
+
+三个截图浏览器用例为 `test_stitch_normalizes_common_elements_and_crops_after_scaling`、`test_frames_without_record_skips_encoder_for_actions_and_evidence`、`test_lint_allows_content_cards_inside_panels_and_editors`。可从 tests 目录用 unittest 指定上述类/方法复现；没有运行整个截图测试文件或全部 Craft/上游矩阵。
+
+另用新版截图 CLI 对未修改的 `examples/adaptive-workspace.html` 执行一次真实 HTTP 列表→详情：显式 --root 为仓库根，390×844、--frames 6、--hold 300、命名步骤 `detail: click button[data-open=content-reviewer]`。生成六帧带时间序列和起/中/终态图，未编码视频；report issues=[]，工具报告无控制台错误、横向溢出或加载失败图片。主执行者实际查看序列图：列表和详情字段完整、布局正常。序列图只证明状态与变化，不冒充正常速度手感或独立视觉评审。
+
+证据保存在当前聊天本地截图目录的 `upstream-0.28.0/`（motion-detail-sequence.png、起/中/终态和 report.json），不提交截图、机器路径或过程数据到仓库。
+
+静态完整性：主 Skill 37 个本地链接全部有效，版本与 Fork 路由正确，无冲突标记；受保护的示例/增强参考/更新器相对 Fork 基线无差异，最终树不存在新增 workflow。对本机已安装 craft-ux.2 的 77 个文件重新做 Git blob 核对，全部仍匹配 84e6715，没有更新安装。
+
+### 未运行与剩余事项
+
+- 没有复跑十九组件、完整 HTTP 资源矩阵、WebGL/context loss、游戏胜败、读屏、真机或生产业务；示例未变，历史证据按原提交范围保留。
+- 没有本轮独立视觉 Agent 评审或新设计评审循环；本次是上游工具与入口规则同步，不重设计示例。
+- 已运行用例没有失败或环境跳过；macOS/Linux 执行结果未验证。默认单方向等提示词行为通过文本整合审查，未用真实用户任务证明跨模型执行效果。
+- 当前未发现已知阻塞缺陷；PR 供审阅，未经用户批准不合并，不更新本机安装，不部署。本轮没有引入 Actions，因此不以缺少远端 CI 结果伪称 CI 全绿。

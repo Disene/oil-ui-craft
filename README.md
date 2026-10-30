@@ -4,13 +4,15 @@ English · [中文](README.zh-CN.md)
 
 An MIT-licensed fork of [Oil UI](https://github.com/oil-oil/oil-ui), preserving upstream design exploration, comparison, screenshot/recording and review workflows. **Not official Oil UI Pro**, with no private Pro source or claim of one-to-one equivalence.
 
-Upstream version: `0.24.2`. Independent extension: `craft-ux.2`. An open PR is not an installed release; normal installation reads `main`.
+Upstream version: `0.28.0`. Independent extension: `craft-ux.3`. An open PR is not an installed release; normal installation reads `main`.
+
+This candidate integrates upstream `56240e1`, keeps the Craft examples and Fork update guard, and excludes the new upstream Actions workflow. The installed `craft-ux.2` copy is not updated by this PR.
 
 ## Available work
 
 - Task-scoped existing-product, workbench, interaction and bounded review guidance.
 - **19 original patterns**: six spatial card compositions and thirteen interactive studies with real local state changes.
-- SVG flow, Canvas dot field and WebGL gradient implementation, including pause, reduced motion and static CSS fallback. **The WebGL path has not run successfully in the current test environment.**
+- SVG flow, Canvas dot field and WebGL gradient implementation, including pause, reduced motion and static CSS fallback. Prior browser verification covered WebGL rendering, context recovery and CSS fallback; this synchronization reuses that evidence.
 - A playable memory game with ready, playing, mismatch, pause, win, loss and restart states.
 - Optional filename/metadata-blinded screenshot packets and evidence-linked review validation. The tool **does not call a model or certify reviewer independence**.
 - Optional browser journeys, conservative evidence summaries and a guard against replacing this fork with an upstream in-place update.
@@ -37,7 +39,7 @@ python -m unittest discover -s tests -p 'test_fork_update.py' -v
 python -m unittest discover -s tests -p 'test_review_packet.py' -v
 ```
 
-This batch: **23 focused tests passed, zero skipped**, using complete static pages loaded in memory. Not the full upstream test suite. HTTP navigation was blocked by browser policy; WebGL used the CSS fallback. Native browser zoom, screen readers, real devices, independent-agent review and production usability have not been certified. No new GitHub Actions workflows or paid services.
+Historical evidence includes **23 focused tests** and the later **7/7 workbench tests** (overlapping coverage), plus HTTP/WebGL and independent visual checks at their recorded commits. The 0.28.0 sync runs only affected tooling and Fork-protection checks; see the validation record for current results and unrun scope. Native browser zoom, screen readers, real devices and production usability remain unverified. No new GitHub Actions workflows or paid services.
 
 ## Attribution
 
