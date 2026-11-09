@@ -1,6 +1,6 @@
 # Craft UX.2：独立实施与聚焦验证
 
-最新候选（2026-10-31）：同步上游 `56240e1` / Oil UI `0.28.0`，Fork 标记为 `craft-ux.3`，保留 Craft 按需增强与更新保护，排除新增 Actions。受影响范围 12/12 定向测试及新版截图工具的列表→详情序列图检查通过；未重跑完整矩阵。本候选尚未合并，本机安装仍为 `craft-ux.2`，77 个文件未变。具体证据与未运行项见文末同步记录；此前 PR #2 的合并/安装记录属于历史基线。
+最新候选（2026-11-09）：同步上游 `16b3057` / Oil UI `0.33.2`，Fork 标记为 `craft-ux.4`。保留正文 4.5:1 / 大字 3:1 对比度告警，吸收小于 11px 的正文风险提示；保持 Craft 入口与更新保护，不新增 Actions。定向测试 10 通过、2 因 Windows 环境跳过，另完成中文 UTF-8 测量及桌面/窄屏 HTTP 截图复核；仅修复实际发现的一处工作台文字色。本候选尚未合并，本机仍安装 `0.28.0 / craft-ux.3`，81 个文件未变。具体决定、证据及未运行项见文末 0.33.2 同步记录；此前结果均为历史证据。
 
 基线：PR #2 的 `a3faa7e257ba39219b45512c519498cd6125e1ec`。本轮不修改 StepWise、不安装用户机器 Skill、不合并或部署、不新增 Actions 或付费服务。
 
@@ -189,3 +189,52 @@ Windows 本机 Python 3.10.11、Node 24.0.1、已安装 Google Chrome；未安�
 - 没有本轮独立视觉 Agent 评审或新设计评审循环；本次是上游工具与入口规则同步，不重设计示例。
 - 已运行用例没有失败或环境跳过；macOS/Linux 执行结果未验证。默认单方向等提示词行为通过文本整合审查，未用真实用户任务证明跨模型执行效果。
 - 当前未发现已知阻塞缺陷；PR 供审阅，未经用户批准不合并，不更新本机安装，不部署。本轮没有引入 Actions，因此不以缺少远端 CI 结果伪称 CI 全绿。
+
+## 2026-11-09：上游 0.33.2 同步候选（craft-ux.4）
+
+### 对象与吸收范围
+
+- Fork 基线为已合并 PR #3 的 `72f32b4d3f606bc250d1d60c31c6bff2af0c352f`，上次吸收上游 `56240e1f9600088b6e658c9c2b37acbb91bfb95b`（0.28.0）；本次固定上游 `16b30579489155ed4fae723c4d031e9f4d3c36df`（0.33.2）。分支为 `codex/sync-oil-ui-0.33.2`。此前使用 Squash Merge，本次应用两个上游版本之间的增量，不用过旧的共同祖先重放全部 Fork 内容。
+- 吸收简化后的主流程/评审规则、宿主工具路由、生图辅助指导、参考图颜色/区域/比例测量工具，以及 selector 裁切避让 sticky/fixed 遮挡的修正。保留 Craft 按需入口、更新保护、可选工程核验与精确还原时的 `--compare`。
+- 生图稿是设计输入，不能替代项目组件库与真实文案；不吸收普遍压缩纵向比例的假设或统一放大间距的要求。后台布局依据产品任务和既有设计系统，不统一规定三行、四张指标卡或固定控件尺寸。生图和外部服务仍须服从用户授权。
+- 排除上游新增 Actions、官方 CLI 更新器的版本锁定变更、面向原版分发的日语 README 及 Pro 推荐入口。`scripts/check_update.py` 与其原有测试、`assets/`、全部 `references/craft-*.md` 无差异。示例仅有下述一处经实测确认的颜色修复，没有重新开发组件或测试体系。
+
+### 为什么区别处理对比度与字号
+
+两项门槛均在上游 `651c4845483ae181936c7301e8d0336b2af92877`（0.29.0）降低。作者的 [v0.29.0 发布说明](https://github.com/oil-oil/oil-ui/releases/tag/v0.29.0) 将其描述为精简流程、仅保留四类可读性/渲染硬问题，并列出正文 3.0 / 大字 2.5、小于 11px 的门槛。提交说明、关联 PR/评论及检索到的 Issue 未提供数值推导、误报样本或阅读评估。减少风格约束可能是整体简化方向，但这是本轮推断，不能当成作者对数值的已证实解释。
+
+- **不吸收对比度降低**：继续正文 4.5:1 / 大字 3:1。该值与 [WCAG 2.2 Contrast Minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) 的一般文字要求一致；禁用、装饰等例外仍须按上下文判断。样式计算工具不能识别所有背景与语义，也不是完整合规认证。
+- **吸收小于 11px 的正文风险提示**：去掉将所有小于 13px 的长/多行文本一律告警的规则，保留对极小正文的提示。11px 不是推荐字号或通过线；短标签、长正文、字体、语言、设备及项目规范必须分开判断。[WCAG Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html) 要求相关文本可放大至 200% 且无内容/功能损失，并没有规定通用 13px 最小字号。实际阅读与必要的缩放检查不能由“无告警”替代。
+- **吸收风格类 blanket lint 的移除**：眉标、编号、渐变等是否合适由任务和设计系统判断；不因工具不再提示而删除可读性、焦点、间距等真实验收要求。
+
+### 实际发现与修复
+
+新版工具从真实入口点击 `button[data-open=content-reviewer]`，通过临时 HTTP 服务截取账号详情。桌面 1207×892 首次报告 12 处对比度提示：现有次要文字 `--sub:#66758b` 在页面底色上约 4.37:1；这正是降低到 3.0 会漏掉的风险。仅将工作台既有 token 调深到 `#5f6e84`，保持品牌主色、字号、布局和交互不变。沿同一路径重新截取桌面及 390×844 窄屏，两个 report 的 issues/lint 均为空。
+
+主执行者实际查看两张修正后截图：桌面列表/详情、两行权限和状态筛选控件清楚，窄屏详情与返回入口完整，无横向裁切；截图工具 zoom=1。该值不是原生浏览器缩放或操作系统 DPI 的实测。本轮只改变文字色，焦点、下拉箭头、上传区、动效与其状态验证沿用前轮记录，不冒充本轮重跑。
+
+### 受影响范围验证
+
+Windows 本机 Python 3.10.11、Node 24.0.1、Google Chrome 156.0.8078.48；未安装新依赖。首批定向 unittest 约 34 秒，9 通过、2 环境跳过；最终审查将既有对比度回归的预期同步回 4.5，并单独运行该用例，约 3 秒通过。合计 **12 项中 10 通过、2 环境跳过、0 失败**，没有重复完整矩阵：
+
+| 范围 | 结果 | 证据与边界 |
+| --- | --- | --- |
+| `test_measure_reference.MeasureReferenceTests` | 3/3 通过 | 颜色/比例/裁切、标注输出、无 Pillow 时的标准库 PNG 路径 |
+| `test_fork_update.ForkUpdateProtection` | 1/1 通过 | Fork 拒绝官方原地更新，不调用 npm/网络、不改安装或状态 |
+| `test_shoot.ShootBrowserTests` 的定向用例 | 6/6 通过 | selector 滚入/遮挡裁切、四类 lint、对比度与极小字号边界、既有正文 4.5 对比度回归、保留 `--compare`、frames/evidence 不编码视频 |
+| `test_check_update.CheckUpdateTest` 两项 | 环境受限，2 跳过 | `test_default_check_never_executes_the_updater_or_changes_the_skill`、`test_explicit_update_pins_cli_and_filters_unrelated_secrets` 使用 POSIX 假 npx，Windows 不支持该夹具；未把跳过算通过。本轮最终排除官方更新器改动及其测试差异；Fork 保护另有上述实跑证据 |
+| 测量 CLI 的中文 UTF-8 输出 | 通过（额外手动检查） | 在父进程 `PYTHONIOENCODING=cp936` 下输出仍可按 UTF-8 解码，中文区域名及 2 倍坐标换算正确 |
+| 工作台 HTTP + 点击详情 + 主/窄视口 | 通过（主执行者） | 1207×892、390×844，实际截图复核；修复后 issues=[] / lint=[]，无工具报告的控制台错误、加载失败图片或横向溢出 |
+| 静态完整性 | 通过 | SKILL 39 处本地链接有效；`quick_validate.py`（Windows 显式 UTF-8）、`node --check scripts/shoot.mjs`、`git diff --check` 通过；无冲突标记、无新增 workflow，Fork 增强与更新器保留 |
+| 本机安装只读核对 | 通过 | 仍为 `0.28.0 / craft-ux.3`，81 个文件逐一 Git blob 匹配 `72f32b4`，没有更新或重复安装 |
+
+六个截图用例为 `test_selector_crops_first_visible_element_and_scrolls`、`test_lint_flags_default_patterns`、`test_lint_preserves_contrast_and_treats_tiny_body_text_as_risk`、`test_lint_requires_body_contrast_of_4_5`、`test_compare_against_reference`、`test_frames_without_record_skips_encoder_for_actions_and_evidence`。新增边界用例用真实页面验证普通文字约 3.95:1、大字约 2.68:1 仍报错，普通文字约 4.54:1 不报错，12px 段落不因字号告警、10px 中文长正文会告警。
+
+本地证据沿用当前聊天目录的 `upstream-0.33.2/`：首次截图/report、`contrast-fixed/` 下两张修正后截图及 report、`utf8-measurement.json`。不提交机器路径、过程截图或个人数据到仓库。
+
+### 未运行与判断
+
+- 未重跑完整测试矩阵、十九组件、六页完整 HTTP 资源矩阵、WebGL/context loss、游戏胜败；这些按原实现及历史记录复用。文字色修复只新增上述两视口定向复核。
+- 本轮未执行真实生图、Oil 积分/付费服务、跨模型提示词任务、原生 200% 缩放、读屏、真机、macOS/Linux 或生产业务；文字规则经过文档审查，不宣称实证改善所有模型的输出。
+- 本轮为主执行者看图与操作，没有新增独立视觉 Agent 或真人验收。工具无告警不能替代这些未运行项。
+- 当前未发现已知阻塞缺陷，候选可供合并审阅；上面两项 Windows 夹具限制明确保留，不伪称全绿。未合并、未更新本机安装、不改 StepWise、不部署，也不新增 Actions。
