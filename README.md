@@ -8,7 +8,7 @@ Upstream version: `0.33.2`. Independent extension: `craft-ux.4`. An open PR is n
 
 This candidate integrates upstream `16b3057`, keeps the Craft examples and Fork update guard, and excludes the new upstream Actions workflow. The installed `0.28.0 / craft-ux.3` copy is not updated by this PR.
 
-The sync adds reference-image measurement, image-ideation guidance and improved element crops. It keeps contrast warnings at 4.5:1 for normal text / 3:1 for large text; the upstream <11px body-text warning is a risk hint, not an approved body size. One observed workbench contrast defect is fixed by darkening its existing secondary-text token. Rationale, affected checks and exclusions are recorded in [Validation](docs/VALIDATION.md#2026-11-09上游-0332-同步候选craft-ux4).
+The sync adds reference-image measurement, image-ideation guidance and improved element crops. Contrast warning thresholds follow upstream at 3:1 for normal text / 2.5:1 for large text, as requested; these are tool warning thresholds, not accessibility certification. The upstream <11px body-text warning is a risk hint, not an approved body size. The previously verified workbench secondary-text adjustment is retained. Rationale, affected checks and exclusions are recorded in [Validation](docs/VALIDATION.md#2026-11-09上游-0332-同步候选craft-ux4).
 
 ## Available work
 

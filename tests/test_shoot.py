@@ -1195,15 +1195,17 @@ h1{font-size:48px;margin:0 0 24px;background:linear-gradient(90deg,#7c3aed,#06b6
             self.assertNotIn(removed, rules)
         self.assertIn("可读性与渲染提示", result.stdout)
 
-    def test_lint_preserves_contrast_and_treats_tiny_body_text_as_risk(self):
+    def test_lint_uses_upstream_contrast_and_treats_tiny_body_text_as_risk(self):
         body = '这是一段需要连续阅读的正文，字号应结合项目设计系统和真实阅读情况判断，而不是把单一像素阈值当作合格证明。' * 3
         self.page.write_text('''<!doctype html><html lang="zh"><head><meta charset="utf-8">
 <link rel="icon" href="data:,"><style>
 body{margin:0;padding:20px;background:#fff;color:#222;font:16px/1.6 sans-serif}
-p{width:240px}.normal-low{color:#808080}.large-low{font-size:24px;color:#9e9e9e}
-.normal-safe{color:#767676}.small-ok{font-size:12px}.tiny{font-size:10px}
+p{width:240px}.normal-low{color:#959595}.large-low{font-size:24px;color:#a4a4a4}
+.normal-safe{color:#949494}.large-safe{font-size:24px;color:#a3a3a3}
+.small-ok{font-size:12px}.tiny{font-size:10px}
 </style></head><body><p class="normal-low">Normal contrast probe</p>
-<h2 class="large-low">Large contrast probe</h2><p class="normal-safe">Safe contrast probe</p>
+<h2 class="large-low">Large contrast probe</h2><p class="normal-safe">Safe normal probe</p>
+<h2 class="large-safe">Safe large probe</h2>
 <p class="small-ok">'''+body+'''</p><p class="tiny">极小字风险：'''+body+'''</p></body></html>''', encoding="utf-8")
         output = self.folder / "fork-readability"
         self.shoot(output, "--size", "390x844", "--full")
@@ -1213,7 +1215,9 @@ p{width:240px}.normal-low{color:#808080}.large-low{font-size:24px;color:#9e9e9e}
         contrast = " ".join(lint["contrastLow"]["examples"])
         self.assertIn("Normal contrast probe", contrast)
         self.assertIn("Large contrast probe", contrast)
-        self.assertNotIn("Safe contrast probe", contrast)
+        self.assertNotIn("Safe normal probe", contrast)
+        self.assertNotIn("Safe large probe", contrast)
+        self.assertEqual(lint["contrastLow"]["count"], 2)
         tiny = lint["smallText"]
         self.assertEqual(tiny["count"], 1)
         self.assertIn("极小字风险", " ".join(tiny["examples"]))
@@ -1248,7 +1252,7 @@ body{margin:0}.outer{border-radius:12px;background:#eee;padding:12px;width:340px
         hints = json.loads((output / 'report.json').read_text(encoding='utf-8'))[0]['lint']
         self.assertNotIn('nestedCards', {h['rule'] for h in hints})
 
-    def test_lint_requires_body_contrast_of_4_5(self):
+    def test_lint_requires_body_contrast_of_3(self):
         self.page.write_text('''<!doctype html><html><head><link rel="icon" href="data:,"><style>
 body{margin:0;padding:40px;font:16px/1.6 sans-serif;color:#222;background:#fff}
 body::before{content:"";position:absolute;left:0;top:0;width:12px;height:12px;background:#111}
@@ -1262,8 +1266,8 @@ body::before{content:"";position:absolute;left:0;top:0;width:12px;height:12px;ba
 .pseudo-seg{position:relative;display:inline-block;padding:8px 16px;color:#fff}
 .pseudo-seg::before{content:"";position:absolute;inset:0;background:#111;border-radius:8px;z-index:-1}
 </style></head><body>
-<p class="soft">Body text at about 3.5 to 1 contrast still fails the 4.5 floor.</p>
-<p class="low">Body text at about 2.3 to 1 contrast still fails the 4.5 floor.</p>
+<p class="soft">Secondary text at about 3.5 to 1 contrast is spared by the 3.0 warning floor.</p>
+<p class="low">Body text at about 2.3 to 1 contrast still fails the 3.0 warning floor.</p>
 <p class="faint">Body text at 1.16 to 1 on a plain white background must also be reported.</p>
 <p class="faint-tiny">这是一段在白底上几乎看不见而且字号过小、行高过紧的多行中文正文，用来验证极低对比度不会跳过排版检查。</p>
 <div class="seg"><span class="seg-pill"></span><span class="seg-label">Active Tab</span></div>
@@ -1273,7 +1277,7 @@ body::before{content:"";position:absolute;left:0;top:0;width:12px;height:12px;ba
         self.shoot(output, "--size", "1280x800")
         lint = {item["rule"]: item for item in json.loads((output / "report.json").read_text(encoding="utf-8"))[0]["lint"]}
         self.assertIn("contrastLow", lint)
-        self.assertEqual(lint["contrastLow"]["count"], 4)
+        self.assertEqual(lint["contrastLow"]["count"], 3)
         self.assertIn("smallText", lint)
         self.assertIn("tightLeading", lint)
 

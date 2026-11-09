@@ -764,7 +764,7 @@ async function check() {
 // 在页面里运行，不能引用外层变量。
 function lintPage() {
   const LABELS = {
-    contrastLow: "文字对比度不达标（正文低于 4.5:1，大字低于 3:1）",
+    contrastLow: "文字对比度偏低（工具告警阈值：正文低于 3:1，大字低于 2.5:1）",
     smallText: "正文小于 11px", tightLeading: "多行正文行高过紧",
     stuck: "首屏有内容停在透明状态（出场动画没触发？）",
   };
@@ -881,7 +881,7 @@ function lintPage() {
       const large = size >= 24 || (size >= 18.6 && parseInt(s.fontWeight, 10) >= 700);
       // 低于 1.5:1 且背后垫着非祖先底板或伪元素（滑块、绝对定位胶囊）时，不误报对比度；确定底色上的极低对比度照常报错
       if (!(contrast < 1.5 && hasOverlayPlate(el, r))) {
-        if (contrast < (large ? 3 : 4.5)) add("contrastLow", el, contrast.toFixed(2) + ":1");
+        if (contrast < (large ? 2.5 : 3)) add("contrastLow", el, contrast.toFixed(2) + ":1");
       }
     }
     // 正文：两行以上的段落
