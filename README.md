@@ -4,11 +4,9 @@ English · [中文](README.zh-CN.md)
 
 An MIT-licensed fork of [Oil UI](https://github.com/oil-oil/oil-ui), preserving upstream design exploration, comparison, screenshot/recording and review workflows. **Not official Oil UI Pro**, with no private Pro source or claim of one-to-one equivalence.
 
-Upstream version: `0.33.2`. Independent extension: `craft-ux.4`. An open PR is not an installed release; normal installation reads `main`.
+Upstream version `0.34.5` with independent extension `craft-ux.5`. Installation uses the merged `main` branch.
 
-This candidate integrates upstream `16b3057`, keeps the Craft examples and Fork update guard, and excludes the new upstream Actions workflow. The installed `0.28.0 / craft-ux.3` copy is not updated by this PR.
-
-The sync adds reference-image measurement, image-ideation guidance and improved element crops. Contrast warning thresholds follow upstream at 3:1 for normal text / 2.5:1 for large text, as requested; these are tool warning thresholds, not accessibility certification. The upstream <11px body-text warning is a risk hint, not an approved body size. The previously verified workbench secondary-text adjustment is retained. Rationale, affected checks and exclusions are recorded in [Validation](docs/VALIDATION.md#2026-11-09上游-0332-同步候选craft-ux4).
+The update at `b706300` adds a shorter design workflow, improved screenshot diagnostics and image-request recovery guidance. Craft examples and Fork update protection remain available. Screenshot warnings use 3:1 for normal text and 2.5:1 for large text, including 3:1 for small text and placeholders. The effect of the upstream 4.5:1 exception was measured on the workbench and component gallery. [Validation](docs/VALIDATION.md#2026-11-21-上游-0345-同步候选)
 
 ## Available work
 
@@ -41,7 +39,7 @@ python -m unittest discover -s tests -p 'test_fork_update.py' -v
 python -m unittest discover -s tests -p 'test_review_packet.py' -v
 ```
 
-Historical evidence includes **23 focused tests** and the later **7/7 workbench tests** (overlapping coverage), plus HTTP/WebGL and independent visual checks at their recorded commits. The 0.33.2 sync runs only affected tooling and Fork-protection checks; see the validation record for current results and unrun scope. Native browser zoom, screen readers, real devices and production usability remain unverified. No new GitHub Actions workflows or paid services.
+Historical evidence includes **23 focused tests** and the later **7/7 workbench tests** with overlapping coverage, plus HTTP/WebGL and independent visual checks at their recorded commits. The 0.34.5 sync verifies the affected screenshot and image generation tools. [Validation](docs/VALIDATION.md#2026-11-21-上游-0345-同步候选)
 
 ## Attribution
 
